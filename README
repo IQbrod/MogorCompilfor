@@ -1,3 +1,5 @@
+MinCaml compiler written in Java
+
 Organization of the archive
 
 ARM/     arm source example and compilation with libmincaml   
