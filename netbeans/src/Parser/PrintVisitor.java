@@ -1,5 +1,6 @@
 package Parser;
 
+import Parser.AST.*;
 import java.util.*;
 
 class PrintVisitor implements Visitor {
@@ -15,7 +16,7 @@ class PrintVisitor implements Visitor {
         System.out.print(e.i);
     }
 
-    public void visit(Float e) {
+    public void visit(Flt e) {
         String s = String.format("%.2f", e.f);
         System.out.print(s);
     }

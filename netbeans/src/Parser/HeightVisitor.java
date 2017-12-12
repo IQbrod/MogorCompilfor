@@ -1,5 +1,6 @@
 package Parser;
 
+import Parser.AST.*;
 import java.util.*;
 
 class HeightVisitor implements ObjVisitor<Integer> {
@@ -17,7 +18,7 @@ class HeightVisitor implements ObjVisitor<Integer> {
         return 0;
     }
 
-    public Integer visit(Float e) { 
+    public Integer visit(Flt e) { 
         return 0;
     }
 

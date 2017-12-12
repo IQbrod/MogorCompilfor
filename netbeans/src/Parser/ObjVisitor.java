@@ -1,10 +1,12 @@
 package Parser;
+import Parser.AST.FNeg;
+import Parser.AST.*;
 
-interface ObjVisitor<E> {
+public interface ObjVisitor<E> {
     E visit(Unit e);
     E visit(Bool e);
     E visit(Int e);
-    E visit(Float e);
+    E visit(Flt e);
     E visit(Not e);
     E visit(Neg e);
     E visit(Add e);

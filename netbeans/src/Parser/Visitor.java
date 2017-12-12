@@ -1,13 +1,14 @@
 package Parser;
 
 import java.util.*;
+import Parser.AST.*;
 
-interface Visitor {
+public interface Visitor {
 
     void visit(Unit e);
     void visit(Bool e);
     void visit(Int e);
-    void visit(Float e);
+    void visit(Flt e);
     void visit(Not e);
     void visit(Neg e);
     void visit(Add e);

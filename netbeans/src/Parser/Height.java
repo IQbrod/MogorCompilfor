@@ -1,5 +1,7 @@
 package Parser;
 
+import Parser.AST.FNeg;
+import Parser.AST.*;
 import java.util.*;
 
 // This is an "imperative-style" way of computing the height of
@@ -16,7 +18,7 @@ import java.util.*;
 //   Casts are error-prone, we lose the benefits of static type checking
 //   Not "object-oriented" philosophy 
 
-class Height {
+public class Height {
 
     static int computeHeight(Exp exp) {
         int res = 0;

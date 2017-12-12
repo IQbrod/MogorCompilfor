@@ -1,6 +1,6 @@
 package Parser;
 
-class Id {
+public class Id {
     String id;
     Id(String id) {
         this.id = id;
