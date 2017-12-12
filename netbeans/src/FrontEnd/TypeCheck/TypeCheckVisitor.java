@@ -12,130 +12,131 @@ import Parser.Type.*;
  *
  * @author sazeratj
  */
-public class TypeCheckVisitor implements ObjVisitor<Exp> {
+public class TypeCheckVisitor implements ObjVisitor<Equation> {
 
     @Override
-    public Exp visit(Unit e) {
+    public Equation visit(Unit e) {
+        return new Equation(e, new TUnit());
+    }
+
+    @Override
+    public Equation visit(Bool e) {
+        return new Equation(e, new TBool());
+    }
+
+    @Override
+    public Equation visit(Int e) {
+        return new Equation(e, new TInt());
+    }
+
+    @Override
+    public Equation visit(Flt e) {
+        return new Equation(e, new TFloat());
+    }
+
+    @Override
+    public Equation visit(Not e) {
+        Equation eq = e.e.accept(this);
+        return new Equation(e, new TBool()) + eq;
+    }
+
+    @Override
+    public Equation visit(Neg e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Bool e) {
+    public Equation visit(Add e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Int e) {
+    public Equation visit(Sub e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Flt e) {
+    public Equation visit(FNeg e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Not e) {
+    public Equation visit(FAdd e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Neg e) {
+    public Equation visit(FSub e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Add e) {
+    public Equation visit(FMul e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Sub e) {
+    public Equation visit(FDiv e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(FNeg e) {
+    public Equation visit(Eq e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(FAdd e) {
+    public Equation visit(LE e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(FSub e) {
+    public Equation visit(If e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(FMul e) {
+    public Equation visit(Let e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(FDiv e) {
+    public Equation visit(Var e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Eq e) {
+    public Equation visit(LetRec e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(LE e) {
+    public Equation visit(App e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(If e) {
+    public Equation visit(Tuple e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Let e) {
+    public Equation visit(LetTuple e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(Var e) {
+    public Equation visit(Array e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(LetRec e) {
+    public Equation visit(Get e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Exp visit(App e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Exp visit(Tuple e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Exp visit(LetTuple e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Exp visit(Array e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Exp visit(Get e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Exp visit(Put e) {
+    public Equation visit(Put e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
