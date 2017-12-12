@@ -1,3 +1,5 @@
+package Parser;
+
 abstract class Type {
     private static int x = 0;
     static Type gen() {
