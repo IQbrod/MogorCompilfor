@@ -3,7 +3,7 @@ package Parser;
 import Parser.AST.*;
 import java.util.*;
 
-class HeightVisitor implements ObjVisitor<Integer> {
+public class HeightVisitor implements ObjVisitor<Integer> {
 
     public Integer visit(Unit e) {
         // This tree is of height 0

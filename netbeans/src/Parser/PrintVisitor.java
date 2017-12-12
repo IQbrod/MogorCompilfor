@@ -3,7 +3,7 @@ package Parser;
 import Parser.AST.*;
 import java.util.*;
 
-class PrintVisitor implements Visitor {
+public class PrintVisitor implements Visitor {
     public void visit(Unit e) {
         System.out.print("()");
     }

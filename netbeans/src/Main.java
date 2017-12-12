@@ -1,9 +1,10 @@
-package Parser;
 
-import Parser.AST.Exp;
-import java_cup.runtime.*;
+
+import Parser.*;
+import Parser.*;
+import Parser.AST.*;
+import Parser.Type.*;
 import java.io.*;
-import java.util.*;
 
 public class Main {
   static public void main(String argv[]) {    

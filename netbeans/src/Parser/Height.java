@@ -20,7 +20,7 @@ import java.util.*;
 
 public class Height {
 
-    static int computeHeight(Exp exp) {
+    public static int computeHeight(Exp exp) {
         int res = 0;
         if (exp instanceof Unit) {
             Unit e = (Unit) exp;
