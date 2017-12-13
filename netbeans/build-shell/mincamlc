@@ -4,5 +4,6 @@
 
 MINCAML_HOME=$(cd "$(dirname "$0")"/../../ && pwd)
 CP_DIR="$MINCAML_HOME/netbeans/lib"
-CP="$MINCAML_HOME/netbeans/lib/java-cup-11b-runtime.jar:$MINCAML_HOME/netbeans/src/"
+CP_SRC="$MINCAML_HOME/netbeans/src"
+CP="$CP_DIR/java-cup-11b-runtime.jar:$CP_SRC/"
 exec java -enableassertions -cp "$CP" Main "$@"
