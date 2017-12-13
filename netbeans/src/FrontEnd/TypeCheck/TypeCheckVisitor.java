@@ -8,136 +8,151 @@ package FrontEnd.TypeCheck;
 import Parser.*;
 import Parser.AST.*;
 import Parser.Type.*;
+import java.util.ArrayList;
 /**
  *
  * @author sazeratj
  */
-public class TypeCheckVisitor implements ObjVisitor<Equation> {
+public class TypeCheckVisitor implements ObjVisitor<ArrayList<Equation>> {
 
     @Override
-    public Equation visit(Unit e) {
-        return new Equation(e, new TUnit());
+    public ArrayList<Equation> visit(Unit e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TUnit()));
+        return arr;
     }
 
     @Override
-    public Equation visit(Bool e) {
-        return new Equation(e, new TBool());
+    public ArrayList<Equation> visit(Bool e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TBool()));
+        return arr;
     }
 
     @Override
-    public Equation visit(Int e) {
-        return new Equation(e, new TInt());
+    public ArrayList<Equation> visit(Int e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TInt()));
+        return arr;
     }
 
     @Override
-    public Equation visit(Flt e) {
-        return new Equation(e, new TFloat());
+    public ArrayList<Equation> visit(Flt e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TFloat()));
+        return arr;
     }
 
     @Override
-    public Equation visit(Not e) {
-        Equation eq = e.e.accept(this);
-        return new Equation(e, new TBool()) + eq;
+    public ArrayList<Equation> visit(Not e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.addAll(e.e.accept(this));
+        arr.add(new Equation(e, new TBool()));
+        return arr;
     }
 
     @Override
-    public Equation visit(Neg e) {
+    public ArrayList<Equation> visit(Neg e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Add e) {
+    public ArrayList<Equation> visit(Add e) {
+        ArrayList<Equation> arr = new ArrayList();
+        arr.addAll(e.e1.accept(this));
+        arr.addAll(e.e2.accept(this));
+        arr.add(new Equation(e, new TInt()));
+        return arr;
+    }
+
+    @Override
+    public ArrayList<Equation> visit(Sub e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Sub e) {
+    public ArrayList<Equation> visit(FNeg e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(FNeg e) {
+    public ArrayList<Equation> visit(FAdd e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(FAdd e) {
+    public ArrayList<Equation> visit(FSub e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(FSub e) {
+    public ArrayList<Equation> visit(FMul e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(FMul e) {
+    public ArrayList<Equation> visit(FDiv e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(FDiv e) {
+    public ArrayList<Equation> visit(Eq e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Eq e) {
+    public ArrayList<Equation> visit(LE e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(LE e) {
+    public ArrayList<Equation> visit(If e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(If e) {
+    public ArrayList<Equation> visit(Let e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Let e) {
+    public ArrayList<Equation> visit(Var e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Var e) {
+    public ArrayList<Equation> visit(LetRec e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(LetRec e) {
+    public ArrayList<Equation> visit(App e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(App e) {
+    public ArrayList<Equation> visit(Tuple e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Tuple e) {
+    public ArrayList<Equation> visit(LetTuple e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(LetTuple e) {
+    public ArrayList<Equation> visit(Array e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Array e) {
+    public ArrayList<Equation> visit(Get e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Equation visit(Get e) {
+    public ArrayList<Equation> visit(Put e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Equation visit(Put e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
