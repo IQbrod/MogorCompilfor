@@ -1,6 +1,6 @@
 
 
-import Entrainement.DuplicateVisitor;
+import Entrainement.*;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
 import Parser.*;
@@ -91,6 +91,11 @@ public class Main {
                     Exp duplicate = expression.accept(new DuplicateVisitor());
                     System.out.print("Duplicated AST: ");
                     duplicate.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp duplicate2 = expression.accept(new DuplicateVisitor2());
+                    System.out.print("Duplicated2 AST: ");
+                    duplicate2.accept(new PrintVisitor());
                     System.out.println();
                 }  catch (Exception e) {
                     e.printStackTrace();
