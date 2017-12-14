@@ -4,22 +4,27 @@
  * and open the template in the editor.
  */
 package FrontEnd.TypeCheck;
-import Parser.AST.*;
-import Parser.Type.*;
+
+import Parser.Type.Type;
+
 /**
  *
  * @author givaudav
  */
-public class Equation {
-    private Exp exp;
+public class EnvCouple {
+    private String id;
     private Type type;
     
-    public Equation(Exp exp, Type type) {
-        this.exp = exp;
+    public EnvCouple(String id, Type type) {
+        this.id = id;
         this.type = type;
     }
     
-    public String toString() {
-        return this.exp.getClass().toString() + " = " + this.type.getClass().toString();
+    public String getId() {
+        return this.id;
+    }
+    
+    public Type getType() {
+        return this.type;
     }
 }

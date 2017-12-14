@@ -4,11 +4,32 @@
  * and open the template in the editor.
  */
 package FrontEnd.TypeCheck;
+import java.util.ArrayList;
+import Parser.Type.*;
 
 /**
  *
  * @author givaudav
  */
-public class Environement {
-
+public class Environnement {
+    private ArrayList<EnvCouple> e;
+    
+    public Environnement() {
+        this.e = new ArrayList();
+        this.ajout("print_string", new TTuple(new TArray(), new TUnit()));
+        this.ajout("print_int", new TTuple(new TInt(), new TUnit()));
+    }
+    
+    public void ajout(String id, Type t) {
+        this.e.add(new EnvCouple(id, t));
+    }
+    
+    public Type getTypeById(String id) {
+        for (int i = 0; i<this.e.size(); i++) {
+            if(e.get(i).getId().equals(id)) {
+               return e.get(i).getType();
+            }
+        }
+        return null; //GERER LES EXCEPTIONS
+    }
 }

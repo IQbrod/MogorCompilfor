@@ -66,7 +66,7 @@ public class Main {
         ObjVisitor<Integer> v = new HeightVisitor();
         height = expression.accept(v);
         System.out.println("using HeightVisitor: " + height);
-
+        
         } catch (Exception e) {
             e.printStackTrace();
         }

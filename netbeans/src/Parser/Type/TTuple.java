@@ -10,5 +10,11 @@ package Parser.Type;
  * @author sazeratj
  */
 public class TTuple extends Type {
+    private Type t1;
+    private Type t2;
     
+    public TTuple(Type t1, Type t2) {
+        this.t1 = t1;
+        this.t2 = t2;
+    }
 }

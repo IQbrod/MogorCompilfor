@@ -5,7 +5,6 @@
  */
 package FrontEnd.TypeCheck;
 
-import Parser.*;
 import Parser.AST.*;
 import Parser.Type.*;
 import java.util.ArrayList;
@@ -13,61 +12,60 @@ import java.util.ArrayList;
  *
  * @author sazeratj
  */
-public class TypeCheckVisitor implements ObjVisitor<ArrayList<Equation>> {
-
-    @Override
+public class TypeCheckVisitor {
     public ArrayList<Equation> visit(Unit e) {
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(e, new TUnit()));
         return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Bool e) {
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(e, new TBool()));
         return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Int e) {
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(e, new TInt()));
         return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Flt e) {
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(e, new TFloat()));
         return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Not e) {
         ArrayList<Equation> arr = new ArrayList();
-        arr.addAll(e.e.accept(this));
         arr.add(new Equation(e, new TBool()));
+        arr.addAll(e.e.accept(this));
         return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Neg e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TInt()));
+        arr.addAll(e.e.accept(this));
+        return arr;
     }
 
-    @Override
     public ArrayList<Equation> visit(Add e) {
         ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TUnit()));
         arr.addAll(e.e1.accept(this));
         arr.addAll(e.e2.accept(this));
-        arr.add(new Equation(e, new TInt()));
         return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Sub e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TInt()));
+        arr.addAll(e.e1.accept(this));
+        arr.addAll(e.e2.accept(this));
+        return arr;
     }
 
     @Override
@@ -107,17 +105,33 @@ public class TypeCheckVisitor implements ObjVisitor<ArrayList<Equation>> {
 
     @Override
     public ArrayList<Equation> visit(If e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(e, new TInt()));
+        arr.addAll(e.e1.accept(this));
+        arr.addAll(e.e2.accept(this));
+        arr.addAll(e.e3.accept(this));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Let e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.env.ajout(e.id.toString(), e.t);
+        ArrayList<Equation> arr = new ArrayList();
+        arr.addAll(e.e1.accept(this));
+        arr.addAll(e.e2.accept(this));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Var e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Type t1 = this.env.getTypeById(e.id.toString());
+        if (t1 == null) {
+            return null; //GERER LES EXCEPTIONS
+        } else {
+            ArrayList<Equation> arr = new ArrayList();
+            arr.add(new Equation(e, t1));
+            return arr;
+        }
     }
 
     @Override
