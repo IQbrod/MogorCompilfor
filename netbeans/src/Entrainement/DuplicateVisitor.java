@@ -137,6 +137,7 @@ public class DuplicateVisitor implements ObjVisitor<Exp>{
     @Override
     public Exp visit(LetRec e) {
         FunDef gd = e.fd;
+        //FunDef gd = new FunDef(e.fd.id,e.fd.type,e.fd.args,e.fd.e.accept(this));
         Exp f = e.e.accept(this);
         return new LetRec(gd, f);
     }
@@ -148,7 +149,7 @@ public class DuplicateVisitor implements ObjVisitor<Exp>{
         for (Exp g : e.es) {
             le.add(g.accept(this));
         }
-        return new App(e,le);
+        return new App(f,le);
     }
 
     @Override
