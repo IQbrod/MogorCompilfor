@@ -25,7 +25,7 @@ public class Main {
         + "║      │  --help,  -h │ Display Help      │ Help           ║\n"
         + "╟──────┴──────────────┴───────────────────┴────────────────╢\n"
         + "║        fileName.ml :  file in \"mincaml\" directory        ║\n"    
-        + "╚══════════════════════════════════════════════════════════╝";
+        + "╚══════════════════════════════════════════════════════════╝\n";
     
     static public void main(String argv[]) {    
         /* Calcule du répertoire MINCAML */
@@ -34,41 +34,83 @@ public class Main {
         String mincaml = rep + "mincaml/";
         /* Traitement des arguments */
         if (argv.length == 0) { // Aucun argument
-            System.out.println(help);
-            System.out.println("\033[33mUsing default option: --parse\033[0m");
-            option = "-p";
-            /* On récupère le fichier .ml à parser */
-            java.util.Scanner s = new java.util.Scanner(System.in);
-            System.out.print("Select file to parse (.ml): ");
-            fileName = mincaml + s.nextLine();
-            s.close();
+            option = "-h";
         } else if (argv.length == 1) { // 1 seul argument (fichier.ml)
-            System.out.println("\033[33mUsing default option: --parse\033[0m");
-            option = "-p";
-            fileName = mincaml + argv[0];
+            option = argv[0];
+            if (! (option.equals("-h") || option.equals("--help")) ) {
+                System.out.println("\033[33mMissing Argument FileName\033[0m");
+                java.util.Scanner s = new java.util.Scanner(System.in);
+                System.out.print("Select file to parse (.ml): ");
+                fileName = mincaml + s.nextLine();
+                s.close();
+            }
         } else { // Sinon on utilise les paramètres
             option = argv[0];
             fileName = argv[1];
         }
-        try {
-        Parser p = new Parser(new Lexer(new FileReader(fileName)));
-        Exp expression = (Exp) p.parse().value;      
-        assert (expression != null);
+       
+        /* Traitements des options */
+        switch(option) {
+            case "-h":
+            case "--help":
+                System.out.println(help);
+                break;
+            case "-p":
+            case "--parse":
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.print("AST: ");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    System.out.print("Height: ");
+                    ObjVisitor<Integer> v = new HeightVisitor();
+                    int height = expression.accept(v);
+                    System.out.println(height);
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "-e":
+            case "--train":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-t":
+            case "--type":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-k":
+            case "--knorm":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-a":
+            case "--alpha":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-r":
+            case "--reduc":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-c":
+            case "--close":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-g":
+            case "--gen":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            case "-o":
+            case "--opti":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
+            default:
+                System.out.println(help);
+                System.err.println("Unknown Option "+argv[0]);
+                ;
 
-        System.out.println("------ AST ------");
-        expression.accept(new PrintVisitor());
-        System.out.println();
-
-        System.out.println("------ Height of the AST ----");
-        int height = Height.computeHeight(expression);
-        System.out.println("using Height.computeHeight: " + height);
-
-        ObjVisitor<Integer> v = new HeightVisitor();
-        height = expression.accept(v);
-        System.out.println("using HeightVisitor: " + height);
-        
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

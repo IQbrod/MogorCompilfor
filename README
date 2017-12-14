@@ -16,3 +16,5 @@ tools/   asml intepreter (linux binary)
 
 We recommend that you add scripts/ and the dir that contains mincamlc to your
 PATH. 
+
+Thank you for reading me :)
