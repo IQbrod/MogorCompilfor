@@ -1,10 +1,12 @@
 
 
+import FrontEnd.TypeCheck.*;
 import Parser.*;
 import Parser.*;
 import Parser.AST.*;
 import Parser.Type.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main {
     static String option = "";
@@ -80,7 +82,21 @@ public class Main {
                 break;
             case "-t":
             case "--type":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+
+                    System.out.println("------ Type equations ----");
+                    Environnement predef = new Environnement();
+                    ArrayList<Equation> eqArray = new ArrayList();
+                    eqArray.addAll(expression.accept(new TypeCheckVisitor(), predef, new TUnit()));
+                    for (int i = 0; i<eqArray.size(); i++) {
+                        System.out.println(eqArray.get(i).toString());
+                    }
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-k":
             case "--knorm":
