@@ -1,5 +1,6 @@
 
 
+import Entrainement.DuplicateVisitor;
 import Parser.*;
 import Parser.*;
 import Parser.AST.*;
@@ -76,7 +77,22 @@ public class Main {
                 break;
             case "-e":
             case "--train":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.print("AST: ");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp duplicate = expression.accept(new DuplicateVisitor());
+                    System.out.print("Duplicated AST: ");
+                    duplicate.accept(new PrintVisitor());
+                    System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-t":
             case "--type":
