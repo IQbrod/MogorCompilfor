@@ -21,10 +21,12 @@ public class Environnement {
     }
     
     public void ajout(String id, Type t) {
+        System.out.println("Ajout de " + id);
         this.e.add(new EnvCouple(id, t));
     }
     
     public Type getTypeById(String id) {
+        System.out.println("Recherche de " + id.toString());
         for (int i = 0; i<this.e.size(); i++) {
             if(e.get(i).getId().equals(id)) {
                return e.get(i).getType();

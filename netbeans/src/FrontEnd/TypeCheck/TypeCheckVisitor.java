@@ -7,6 +7,7 @@ package FrontEnd.TypeCheck;
 
 import Parser.AST.*;
 import Parser.Type.*;
+import static java.lang.System.exit;
 import java.util.ArrayList;
 /**
  *
@@ -78,42 +79,74 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public ArrayList<Equation> visit(FNeg e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(FAdd e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(FSub e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(FMul e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(FDiv e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Eq e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(LE e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(If e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TBool(), type));
+        arr.addAll(e.e1.accept(this, env, new TBool()));
+        arr.addAll(e.e2.accept(this, env, type));
+        arr.addAll(e.e3.accept(this, env, type));
+        return arr;
     }
 
     @Override
@@ -128,6 +161,10 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
     @Override
     public ArrayList<Equation> visit(Var e, Environnement env, Type type) {
         Type t = env.getTypeById(e.id.toString());
+        if (t == null) {
+            System.out.println("Variable non trouvée");
+            exit(0);
+        }
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(t, type));
         return arr;
@@ -138,7 +175,8 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
         ArrayList<Equation> arr = new ArrayList();
         arr.add(new Equation(new TUnit(), type));
         arr.addAll(e.e.accept(this, env, type));
-        //arr.addAll(e.fd.e.accept(this, env, e.fd.type));
+        env.ajout(e.fd.id.toString(), e.fd.type);
+        arr.addAll(e.fd.e.accept(this, env, e.fd.type));
         return arr;
     }
 
