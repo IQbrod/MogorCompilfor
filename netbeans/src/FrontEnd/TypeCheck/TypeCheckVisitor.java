@@ -16,42 +16,64 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public ArrayList<Equation> visit(Unit e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TUnit(), type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Bool e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TBool(), type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Int e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Flt e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TFloat(), type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Not e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TBool(), type));
+        arr.addAll(e.e.accept(this, env, new TBool()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Neg e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Add e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Sub e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TInt(), type));
+        arr.addAll(e.e1.accept(this, env, new TInt()));
+        arr.addAll(e.e2.accept(this, env, new TInt()));
+        return arr;
     }
 
     @Override
@@ -96,22 +118,38 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public ArrayList<Equation> visit(Let e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.addAll(e.e1.accept(this, env, e.t));
+        env.ajout(e.id.toString(), e.t);
+        arr.addAll(e.e2.accept(this, env, type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(Var e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Type t = env.getTypeById(e.id.toString());
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(t, type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(LetRec e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.add(new Equation(new TUnit(), type));
+        arr.addAll(e.e.accept(this, env, type));
+        //arr.addAll(e.fd.e.accept(this, env, e.fd.type));
+        return arr;
     }
 
     @Override
     public ArrayList<Equation> visit(App e, Environnement env, Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Equation> arr = new ArrayList();
+        arr.addAll(e.e.accept(this, env, type));
+        for (int i = 0; i<e.es.size();i++) {
+            arr.addAll(e.es.get(i).accept(this, env, type));
+        }
+        return arr;
     }
 
     @Override
