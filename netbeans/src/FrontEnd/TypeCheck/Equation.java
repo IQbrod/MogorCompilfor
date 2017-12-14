@@ -11,15 +11,15 @@ import Parser.Type.*;
  * @author givaudav
  */
 public class Equation {
-    private Exp exp;
-    private Type type;
+    private Type t1;
+    private Type t2;
     
-    public Equation(Exp exp, Type type) {
-        this.exp = exp;
-        this.type = type;
+    public Equation(Type t1, Type t2) {
+        this.t1 = t1;
+        this.t2 = t2;
     }
     
     public String toString() {
-        return this.exp.getClass().toString() + " = " + this.type.getClass().toString();
+        return this.t1.getClass().toString() + " = " + this.t2.getClass().toString();
     }
 }
