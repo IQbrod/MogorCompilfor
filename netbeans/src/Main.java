@@ -3,7 +3,6 @@
 import Entrainement.DuplicateVisitor;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
-import Parser.*;
 import Parser.AST.*;
 import Parser.Type.*;
 import java.io.*;
@@ -84,14 +83,27 @@ public class Main {
                     Exp expression = (Exp) p.parse().value;
                     assert (expression != null);
                     
-                    System.out.print("AST: ");
+                    System.out.print("AST: \t\t");
                     expression.accept(new PrintVisitor());
                     System.out.println();
                     
                     Exp duplicate = expression.accept(new DuplicateVisitor());
-                    System.out.print("Duplicated AST: ");
+                    System.out.print("Duplicated AST: \t");
                     duplicate.accept(new PrintVisitor());
                     System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "-s":
+            case "--string": //Test classe ToStringVisitor
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.print("AST: \t\t");
+                    System.out.println(expression.accept(new ToStringVisitor()));
                 }  catch (Exception e) {
                     e.printStackTrace();
                 }
