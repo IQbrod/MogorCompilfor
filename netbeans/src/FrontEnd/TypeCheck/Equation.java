@@ -20,6 +20,6 @@ public class Equation {
     }
     
     public String toString() {
-        return this.t1.getClass().toString() + " = " + this.t2.getClass().toString();
+        return this.t1.toString() + " = " + this.t2.toString();
     }
 }

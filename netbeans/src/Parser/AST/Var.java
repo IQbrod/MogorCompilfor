@@ -36,4 +36,9 @@ public class Var extends Exp {
     public void accept(AbsTypeCheckVisitor v, Environnement env, Type t, ArrayList<Equation> arr) {
         v.visit(this, env, t, arr);
     }
+    
+    @Override
+    public String toString() {
+        return this.id.toString();
+    }
 }
