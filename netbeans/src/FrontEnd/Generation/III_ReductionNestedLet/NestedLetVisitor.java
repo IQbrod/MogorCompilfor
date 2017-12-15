@@ -125,7 +125,7 @@ public class NestedLetVisitor implements ObjVisitor<Exp> {
         if (e.e1 instanceof Let) { //Nested Let
             Let l2 = new Let(e.id,e.t,((Let)e.e1).e2.accept(this),e.e2.accept(this));
             Let l1 = new Let(((Let)e.e1).id, ((Let)e.e1).t, ((Let)e.e1).e1.accept(this), l2);
-            return l1;
+            return l1.accept(this); //Permet de consulter les Let imbriqués :)
         } else {
             return new Let(e.id, e.t, e.e1.accept(this), e.e2.accept(this));
         }

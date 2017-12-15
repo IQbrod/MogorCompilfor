@@ -168,8 +168,8 @@ public class Main {
                     expression.accept(new PrintVisitor());
                     System.out.println();
                     
-                    //Exp k = expression.accept(new KNormVisitor());
-                    Exp r = expression.accept(new NestedLetVisitor());
+                    Exp k = expression.accept(new KNormVisitor());
+                    Exp r = k.accept(new NestedLetVisitor());
                     System.out.println("NestedLetReduced AST: ");
                     r.accept(new PrintVisitor());
                     System.out.println();
