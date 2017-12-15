@@ -123,7 +123,7 @@ public class Main {
                     System.out.println("------ Type equations ----");
                     Environnement predef = new Environnement();
                     ArrayList<Equation> eqArray = new ArrayList();
-                    eqArray.addAll(expression.accept(new TypeCheckVisitor(), predef, new TUnit()));
+                    expression.accept(new TypeCheckVisitor(), predef, new TUnit(), eqArray);
                     for (int i = 0; i<eqArray.size(); i++) {
                         System.out.println(eqArray.get(i).toString());
                     }

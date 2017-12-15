@@ -37,7 +37,7 @@ public class If extends Exp {
     }
     
     @Override
-    public ArrayList<Equation> accept(AbsTypeCheckVisitor v, Environnement env, Type t) {
-        return v.visit(this, env, t);
+    public void accept(AbsTypeCheckVisitor v, Environnement env, Type t, ArrayList<Equation> arr) {
+        v.visit(this, env, t, arr);
     }
 }

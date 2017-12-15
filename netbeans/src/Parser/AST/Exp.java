@@ -10,6 +10,6 @@ public abstract class Exp {
 
     public abstract <E> E accept(ObjVisitor<E> v);
     
-    public abstract ArrayList<Equation> accept(AbsTypeCheckVisitor v, Environnement env, Type t);
+    public abstract void accept(AbsTypeCheckVisitor v, Environnement env, Type t, ArrayList<Equation> arr);
 }
  

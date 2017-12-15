@@ -21,7 +21,7 @@ public class Environnement {
     }
     
     public void ajout(String id, Type t) {
-        System.out.println("Ajout de " + id);
+        System.out.println("Ajout de " + id + " de type " + t.getClass().toString());
         this.e.add(new EnvCouple(id, t));
     }
     
@@ -33,5 +33,12 @@ public class Environnement {
             }
         }
         return null; //GERER LES EXCEPTIONS
+    }
+    
+    public void afficher() {
+        System.out.println("Affichage du contenu de l'environnement :");
+        for (int i = 0; i<this.e.size(); i++) {
+            System.out.println(this.e.get(i).getId() + " -> " + this.e.get(i).getType());
+        }
     }
 }
