@@ -10,7 +10,7 @@ public class Id {
         return id;
     }
     static int x = -1;
-    static Id gen() {
+    public static Id gen() {
         x++;
         return new Id("?v" + x);
     }

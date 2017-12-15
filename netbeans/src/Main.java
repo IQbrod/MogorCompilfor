@@ -1,6 +1,7 @@
 
 
 import Entrainement.*;
+import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
 import Parser.AST.*;
@@ -134,7 +135,22 @@ public class Main {
                 break;
             case "-k":
             case "--knorm":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.println("AST:");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp k = expression.accept(new KNormVisitor());
+                    System.out.println("KNorm AST: ");
+                    k.accept(new PrintVisitor());
+                    System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-a":
             case "--alpha":
