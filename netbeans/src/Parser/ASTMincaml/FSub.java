@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
@@ -16,13 +16,13 @@ import java.util.ArrayList;
  *
  * @author sazeratj
  */
-public class LetRec extends Exp {
-    public final FunDef fd;
-    public final Exp e;
+public class FSub extends Exp {
+    public final Exp e1;
+    public final Exp e2;
 
-    public LetRec(FunDef fd, Exp e) {
-        this.fd = fd;
-        this.e = e;
+    public FSub(Exp e1, Exp e2) {
+        this.e1 = e1;
+        this.e2 = e2;
     }
 
     @Override

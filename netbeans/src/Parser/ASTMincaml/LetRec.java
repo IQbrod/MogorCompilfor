@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
@@ -11,24 +11,24 @@ import FrontEnd.TypeCheck.Equation;
 import Parser.*;
 import Parser.Type.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author sazeratj
  */
-public class Tuple extends Exp {
-    public final List<Exp> es;
+public class LetRec extends Exp {
+    public final FunDef fd;
+    public final Exp e;
 
-    public Tuple(List<Exp> es) {
-        this.es = es;
+    public LetRec(FunDef fd, Exp e) {
+        this.fd = fd;
+        this.e = e;
     }
 
     @Override
     public <E> E accept(ObjVisitor<E> v) {
         return v.visit(this);
     }
-
     @Override
     public void accept(Visitor v) {
         v.visit(this);

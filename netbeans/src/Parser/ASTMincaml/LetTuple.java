@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
@@ -11,20 +11,21 @@ import FrontEnd.TypeCheck.Equation;
 import Parser.Type.Type;
 import Parser.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author sazeratj
  */
-public class Let extends Exp {
-    public final Id id;
-    public final Type t;
+public class LetTuple extends Exp {
+    public final List<Id> ids;
+    public final List<Type> ts;
     public final Exp e1;
     public final Exp e2;
 
-    public Let(Id id, Type t, Exp e1, Exp e2) {
-        this.id = id;
-        this.t = t;
+    public LetTuple(List<Id> ids, List<Type> ts, Exp e1, Exp e2) {
+        this.ids = ids;
+        this.ts = ts;
         this.e1 = e1;
         this.e2 = e2;
     }
