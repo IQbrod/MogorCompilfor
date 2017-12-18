@@ -165,31 +165,38 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
     public void visit(Var e, Environnement env, Type type, ArrayList<Equation> arr) {
         System.out.println("Visite de Var");
         Type t = env.getTypeById(e.id.toString());
+        if (t == null) {
+            System.err.println("Variable non trouvée");
+            exit(1);
+        }
         arr.add(new Equation(t, type));
     }
 
     @Override
     public void visit(LetRec e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
-    /*App M M1..MN type
-        B -> type
-        eq1 = GenEquations(M -> A)  
-        eq2 = GenEquations(Mi -> Ai)
-    */
-    
     @Override
     public void visit(App e, Environnement env, Type type, ArrayList<Equation> arr) {
         System.out.println("Visite de App");
-        e.e.accept(this, env, type, arr);
-        for (int i = 0; i<e.es.size(); i++) {
-            e.es.get(i).accept(this, env, type, arr);
+        TTuple appT = (TTuple)env.getTypeById(e.e.toString());
+        if (appT == null) {
+            System.err.println("Fonction non trouvée");
+            exit(1);
         }
+        e.e.accept(this, env, appT, arr);
+        for (int i = 0; i<e.es.size(); i++) {
+            e.es.get(i).accept(this, env, appT.ts.get(i), arr);
+        }
+        arr.add(new Equation(appT.ts.get(appT.ts.size()-1),type));
     }
 
     @Override
     public void visit(Tuple e, Environnement env, Type type, ArrayList<Equation> arr) {
+        /*for (int i = 0 ; i<e.es.size() ; i++) {
+            e.es.get(i).accept(this, env, type, arr);
+        }*/
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

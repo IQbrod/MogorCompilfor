@@ -5,30 +5,31 @@
  */
 package Parser.Type;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sazeratj
  */
 public class TTuple extends Type {
+    public ArrayList<Type> ts;
 
-    private Type t1;
-    private Type t2;
-
-    public TTuple(Type t1, Type t2) {
-        this.t1 = t1;
-        this.t2 = t2;
-    }
-
-    public Type getT1() {
-        return t1;
-    }
-
-    public Type getT2() {
-        return t2;
+    public TTuple(ArrayList<Type> t) {
+        this.ts = new ArrayList();
+        this.ts.addAll(t);
     }
 
     @Override
     public String toString() {
-        return t1.toString() + " -> " + t2.toString();
+        if (this.ts.size() > 0) {
+            String str = new String();
+            for (int i = 0; i<this.ts.size()-1; i++) {
+                str = str.concat(this.ts.get(i).toString() + " -> ");
+            }
+            str = str.concat(this.ts.get(this.ts.size()-1).toString());
+            return str;
+        } else {
+            return "Empty tuple";
+        }
     }
 }

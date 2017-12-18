@@ -16,7 +16,7 @@ public class TVar extends Type {
     }
     @Override
     public String toString() {
-        return "var"; 
+        return v; 
     }
 }
 
