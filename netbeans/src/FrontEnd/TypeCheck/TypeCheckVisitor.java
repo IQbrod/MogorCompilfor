@@ -174,7 +174,7 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public void visit(LetRec e, Environnement env, Type type, ArrayList<Equation> arr) {
-        
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
