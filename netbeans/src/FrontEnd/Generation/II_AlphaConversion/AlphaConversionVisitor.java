@@ -6,7 +6,7 @@
 package FrontEnd.Generation.II_AlphaConversion;
 
 import Parser.*;
-import Parser.AST.*;
+import Parser.ASTMincaml.*;
 import Parser.Type.*;
 import java.util.ArrayList;
 import java.util.List;

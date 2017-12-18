@@ -5,8 +5,8 @@
  */
 package Entrainement;
 
+import Parser.ASTMincaml.*;
 import Parser.*;
-import Parser.AST.*;
 
 /**
  *

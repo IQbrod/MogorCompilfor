@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package FrontEnd.TypeCheck;
-import Parser.AST.*;
 import Parser.Type.*;
 /**
  *
@@ -20,6 +19,6 @@ public class Equation {
     }
     
     public String toString() {
-        return this.t1.getClass().toString() + " = " + this.t2.getClass().toString();
+        return this.t1.toString() + " = " + this.t2.toString();
     }
 }

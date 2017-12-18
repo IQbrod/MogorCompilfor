@@ -11,4 +11,8 @@ package Parser.Type;
  */
 public class TArray extends Type {
     
+    @Override
+    public String toString() {
+        return "array";
+    }
 }

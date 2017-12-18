@@ -21,7 +21,7 @@ public class Environnement {
     }
     
     public void ajout(String id, Type t) {
-        System.out.println("Ajout de " + id + " de type " + t.getClass().toString());
+        System.out.println("Ajout de " + id + " de type " + t.toString());
         this.e.add(new EnvCouple(id, t));
     }
     

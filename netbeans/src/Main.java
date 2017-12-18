@@ -1,11 +1,12 @@
 
 
+import Parser.ASTMincaml.Exp;
 import Entrainement.*;
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
+import FrontEnd.Generation.III_ReductionNestedLet.NestedLetVisitor;
 import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
-import Parser.AST.*;
 import Parser.Type.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -174,7 +175,23 @@ public class Main {
                 break;
             case "-r":
             case "--reduc":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.println("AST:");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp k = expression.accept(new KNormVisitor());
+                    Exp r = k.accept(new NestedLetVisitor());
+                    System.out.println("NestedLetReduced AST: ");
+                    r.accept(new PrintVisitor());
+                    System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-c":
             case "--close":

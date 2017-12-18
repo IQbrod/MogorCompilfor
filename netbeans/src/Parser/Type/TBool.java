@@ -10,5 +10,8 @@ package Parser.Type;
  * @author sazeratj
  */
 public class TBool extends Type {
-    
+    @Override
+    public String toString() {
+        return "bool";
+    }
 }

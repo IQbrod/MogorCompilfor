@@ -3,18 +3,45 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entrainement;
+package FrontEnd.Generation.III_ReductionNestedLet;
 
-import Parser.ASTMincaml.*;
+import Parser.ASTMincaml.FSub;
+import Parser.ASTMincaml.Unit;
+import Parser.ASTMincaml.Tuple;
+import Parser.ASTMincaml.Get;
+import Parser.ASTMincaml.LetTuple;
+import Parser.ASTMincaml.FunDef;
+import Parser.ASTMincaml.FDiv;
+import Parser.ASTMincaml.App;
+import Parser.ASTMincaml.Int;
+import Parser.ASTMincaml.Exp;
+import Parser.ASTMincaml.Bool;
+import Parser.ASTMincaml.Let;
+import Parser.ASTMincaml.Sub;
+import Parser.ASTMincaml.Array;
+import Parser.ASTMincaml.LetRec;
+import Parser.ASTMincaml.Flt;
+import Parser.ASTMincaml.Put;
+import Parser.ASTMincaml.LE;
+import Parser.ASTMincaml.If;
+import Parser.ASTMincaml.Var;
+import Parser.ASTMincaml.Not;
+import Parser.ASTMincaml.FMul;
+import Parser.ASTMincaml.Neg;
+import Parser.ASTMincaml.Add;
+import Parser.ASTMincaml.FAdd;
+import Parser.ASTMincaml.FNeg;
+import Parser.ASTMincaml.Eq;
 import Parser.*;
 import Parser.Type.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author sazeratj
  */
-public class DuplicateVisitor implements ObjVisitor<Exp>{
+public class NestedLetVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(Unit e) {
@@ -121,11 +148,13 @@ public class DuplicateVisitor implements ObjVisitor<Exp>{
 
     @Override
     public Exp visit(Let e) {
-        Exp f1 = e.e1.accept(this);
-        Exp f2 = e.e2.accept(this);
-        Type t = e.t;
-        Id id = e.id;
-        return new Let(id, t, f1, f2);
+        if (e.e1 instanceof Let) { //Nested Let
+            Let l2 = new Let(e.id,e.t,((Let)e.e1).e2.accept(this),e.e2.accept(this));
+            Let l1 = new Let(((Let)e.e1).id, ((Let)e.e1).t, ((Let)e.e1).e1.accept(this), l2);
+            return l1.accept(this); //Permet de consulter les Let imbriqués :)
+        } else {
+            return new Let(e.id, e.t, e.e1.accept(this), e.e2.accept(this));
+        }
     }
 
     @Override

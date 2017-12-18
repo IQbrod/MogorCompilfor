@@ -1,6 +1,31 @@
 package Parser;
 
-import Parser.AST.*;
+import Parser.ASTMincaml.FSub;
+import Parser.ASTMincaml.Unit;
+import Parser.ASTMincaml.Tuple;
+import Parser.ASTMincaml.Get;
+import Parser.ASTMincaml.LetTuple;
+import Parser.ASTMincaml.FDiv;
+import Parser.ASTMincaml.Exp;
+import Parser.ASTMincaml.App;
+import Parser.ASTMincaml.Int;
+import Parser.ASTMincaml.Bool;
+import Parser.ASTMincaml.Let;
+import Parser.ASTMincaml.Sub;
+import Parser.ASTMincaml.Array;
+import Parser.ASTMincaml.LetRec;
+import Parser.ASTMincaml.Flt;
+import Parser.ASTMincaml.Put;
+import Parser.ASTMincaml.LE;
+import Parser.ASTMincaml.If;
+import Parser.ASTMincaml.Var;
+import Parser.ASTMincaml.Not;
+import Parser.ASTMincaml.FMul;
+import Parser.ASTMincaml.Neg;
+import Parser.ASTMincaml.Add;
+import Parser.ASTMincaml.FAdd;
+import Parser.ASTMincaml.FNeg;
+import Parser.ASTMincaml.Eq;
 import java.util.*;
 
 public class HeightVisitor implements ObjVisitor<Integer> {

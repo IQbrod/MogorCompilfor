@@ -10,5 +10,8 @@ package Parser.Type;
  * @author sazeratj
  */
 public class TUnit extends Type {
-    
+    @Override
+    public String toString() {
+        return "unit";
+    }
 }

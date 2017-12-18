@@ -2,7 +2,7 @@ package FrontEnd.Generation.II_AlphaConversion;
 
 import Parser.*;
 import java.util.*;
-import Parser.AST.*;
+import Parser.ASTMincaml.*;
 
 public interface AlphaVisitor {
 

@@ -10,5 +10,8 @@ package Parser.Type;
  * @author sazeratj
  */
 public class TInt extends Type{
-    
+    @Override
+    public String toString() {
+        return "int";
+    }
 }
