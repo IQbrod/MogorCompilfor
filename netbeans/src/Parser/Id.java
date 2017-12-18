@@ -15,4 +15,9 @@ public class Id {
         return new Id("?v" + x);
     }
 
+    static int x2 = 0;
+    public static Id gen2() {
+        x2++;
+        return new Id("x" + x2);
+    }
 }
