@@ -158,12 +158,10 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
     @Override
     public void visit(App e, Environnement env, Type type, ArrayList<Equation> arr) {
         System.out.println("Visite de App");
-        Type appT = env.getTypeById(e.e.toString());
-        e.e.accept(this, env, appT, arr);
+        e.e.accept(this, env, type, arr);
         for (int i = 0; i<e.es.size(); i++) {
-            e.es.get(i).accept(this, env, appT, arr);
+            e.es.get(i).accept(this, env, type, arr);
         }
-        arr.add(new Equation(appT, type));
     }
 
     @Override
