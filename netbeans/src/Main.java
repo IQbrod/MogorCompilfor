@@ -1,11 +1,11 @@
 
 
+import Parser.ASTMincaml.Exp;
 import Entrainement.*;
 import FrontEnd.Generation.III_ReductionNestedLet.NestedLetVisitor;
 import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
-import Parser.AST.*;
 import Parser.Type.*;
 import java.io.*;
 import java.util.ArrayList;

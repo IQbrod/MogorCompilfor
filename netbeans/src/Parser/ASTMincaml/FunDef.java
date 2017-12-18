@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import Parser.Type.Type;
 import Parser.*;

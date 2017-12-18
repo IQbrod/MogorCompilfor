@@ -1,4 +1,4 @@
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import java.util.*;
 import Parser.*;

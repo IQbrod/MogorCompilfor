@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package FrontEnd.TypeCheck;
-import Parser.AST.*;
 import Parser.Type.*;
 /**
  *

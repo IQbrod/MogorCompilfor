@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Parser.AST;
+package Parser.ASTMincaml;
 
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
@@ -11,16 +11,15 @@ import FrontEnd.TypeCheck.Equation;
 import Parser.*;
 import Parser.Type.Type;
 import java.util.ArrayList;
-
 /**
  *
  * @author sazeratj
  */
-public class Flt extends Exp {
-    public float f;
+public class Int extends Exp {
+    public final int i;
 
-    public Flt(float f) {
-        this.f = f;
+    public Int(int i) {
+        this.i = i;
     }
 
     @Override
