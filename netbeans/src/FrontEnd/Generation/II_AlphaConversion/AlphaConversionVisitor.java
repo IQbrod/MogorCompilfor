@@ -123,21 +123,24 @@ public class AlphaConversionVisitor implements AlphaVisitor {
     @Override
     public Exp visit(Let e, ArrayList<Ids> changements) {
         Ids res = contient(e.id, changements);
+        Id id;
         if (res != null) {
-            System.out.println("test");
             //On est dans le cas ou il faut renommer
-            Id id = Id.gen2();
+            id = Id.gen2();
             Ids ids = new Ids(e.id, id);
             if (res.nouv.toString().equals(res.old.toString())) {
                 changements.remove(res);
             }
             changements.add(ids);
-            return new Let(id, e.t, e.e1.accept(this, changements), e.e2.accept(this, changements));
         } else {
             //On ajoute la valeur
             changements.add(new Ids(e.id, e.id));
-            return new Let(e.id, e.t, e.e1.accept(this, changements), e.e2.accept(this, changements));
+            id = e.id;
         }
+        ArrayList<Ids> chang = (ArrayList<Ids>) changements.clone();
+        Exp exp1 = e.e1.accept(this, changements);
+        Exp exp2 = e.e2.accept(this, chang);
+        return new Let(id, e.t, exp1, exp2);
     }
 
     @Override
@@ -168,6 +171,7 @@ public class AlphaConversionVisitor implements AlphaVisitor {
             id = e.fd.id;
             changements.add(new Ids(id, id));
         }
+        ArrayList<Ids> chang = (ArrayList<Ids>) changements.clone();
         ArrayList<Id> list = new ArrayList<Id>();
         for (Id i : e.fd.args) {
             Ids res2 = contient(i, changements);
@@ -186,7 +190,7 @@ public class AlphaConversionVisitor implements AlphaVisitor {
                 changements.add(new Ids(id, id));
             }
         }
-        return new LetRec(new FunDef(e.fd.id, e.fd.type, list, e.fd.e), e.e.accept(this, changements));
+        return new LetRec(new FunDef(e.fd.id, e.fd.type, list, e.fd.e.accept(this, changements)), e.e.accept(this, chang));
     }
 
     @Override
