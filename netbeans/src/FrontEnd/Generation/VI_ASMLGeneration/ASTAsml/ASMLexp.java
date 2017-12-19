@@ -11,7 +11,7 @@ import FrontEnd.Generation.VI_ASMLGeneration.ASMLVisitor;
  *
  * @author sazeratj
  */
-public abstract class ASMLexp {
+public abstract class ASMLexp extends ASMLNode{
     public abstract void accept(ASMLVisitor v);
 
     //public abstract <E> E accept(ASMLObjVisitor<E> v);

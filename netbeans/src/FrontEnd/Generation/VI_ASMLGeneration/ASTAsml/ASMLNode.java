@@ -11,7 +11,8 @@ import FrontEnd.Generation.VI_ASMLGeneration.ASMLVisitor;
  *
  * @author sazeratj
  */
-public abstract class Afundef extends ASMLNode{
-    @Override
+public abstract class ASMLNode {
     public abstract void accept(ASMLVisitor v);
+
+    //public abstract <E> E accept(ASMLObjVisitor<E> v);
 }

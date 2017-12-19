@@ -11,13 +11,14 @@ import FrontEnd.Generation.VI_ASMLGeneration.ASMLVisitor;
  *
  * @author sazeratj
  */
-public class Afloat {
+public class Afloat extends ASMLNode{
     public float f;
     
     public Afloat(Float arg) {
         this.f = arg;
     }
     
+    @Override
     public void accept(ASMLVisitor v) {
         v.visit(this);
     }
