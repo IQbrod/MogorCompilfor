@@ -5,7 +5,8 @@
  */
 package FrontEnd.Generation.VI_ASMLGeneration;
 
-import FrontEnd.Generation.VI_ASMLGeneration.ASTAsml.ASMLNode;
+import FrontEnd.Generation.VI_ASMLGeneration.ASTAsml.*;
+import FrontEnd.Generation.VI_ASMLGeneration.Exceptions.BoolException;
 import Parser.ASTMincaml.*;
 import Parser.ObjVisitor;
 
@@ -17,12 +18,17 @@ public class ASMLConverterVisitor implements ObjVisitor<ASMLNode> {
 
     @Override
     public ASMLNode visit(Unit e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Anop();
     }
 
     @Override
     public ASMLNode visit(Bool e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            throw new BoolException();
+        }  catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override

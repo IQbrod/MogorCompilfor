@@ -24,7 +24,11 @@ public class KNormVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(Bool e) {
-        return new Bool(e.b);
+        if(e.b) {
+            return new Eq(new Int(1),new Int(1));
+        } else {
+            return new Eq(new Int(1),new Int(0));
+        }
     }
 
     @Override

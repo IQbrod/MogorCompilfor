@@ -6,7 +6,7 @@
 package FrontEnd.Generation.VI_ASMLGeneration.ASTAsml;
 
 import FrontEnd.Generation.VI_ASMLGeneration.ASMLVisitor;
-import FrontEnd.Generation.VI_ASMLGeneration.NestedLetException;
+import FrontEnd.Generation.VI_ASMLGeneration.Exceptions.NestedLetException;
 
 /**
  *
