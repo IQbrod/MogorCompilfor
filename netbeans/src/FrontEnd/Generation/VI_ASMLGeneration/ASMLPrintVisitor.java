@@ -94,87 +94,153 @@ public class ASMLPrintVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Aeq e) {
-        this.visit(e.e1);
-        System.out.print(" == ");
-        if (e.e2 instanceof Aint)
-            this.visit((Aint) e.e2);
-        if (e.e2 instanceof Aident)
-            this.visit((Aident) e.e2);
+        e.e1.accept(this);
+        System.out.print(" = ");
+        e.e2.accept(this);
     }
 
     @Override
     public void visit(Afeq e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.e1.accept(this);
+        System.out.print(" =. ");
+        e.e2.accept(this);
     }
 
     @Override
     public void visit(Afle e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.e1.accept(this);
+        System.out.print(" <=. ");
+        e.e2.accept(this);
     }
 
     @Override
     public void visit(Age e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.e1.accept(this);
+        System.out.print(" >= ");
+        e.e2.accept(this);
     }
 
     @Override
     public void visit(Ale e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.e1.accept(this);
+        System.out.print(" <= ");
+        e.e2.accept(this);
     }
 
     @Override
     public void visit(Anot e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /** BE CAREFUL => Check and invert display in IF node **/
+        e.e.accept(this);
     }
 
     @Override
     public void visit(Acall e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("call ");
+        e.lb.accept(this);
+        System.out.print("(");
+        for (Aident a : e.args) {
+            a.accept(this);
+            System.out.print(",");
+        }
+        System.out.print(")");
     }
 
     @Override
     public void visit(Acallclo e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("call "); // VOIR AVEC PROF SELON SEMANTIQUE
+        e.lb.accept(this);
+        System.out.print("(");
+        for (Aident a : e.args) {
+            a.accept(this);
+            System.out.print(",");
+        }
+        System.out.print(")");
     }
 
     @Override
     public void visit(Afunflt e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("let ");
+        e.id.accept(this);
+        System.out.print(" = ");
+        e.f.accept(this);
+        System.out.print("\n");
+        e.next.accept(this);
     }
 
     @Override
     public void visit(Afunlabel e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("let ");
+        e.id.accept(this);
+        System.out.print("(");
+        for (Aident a : e.args) {
+            a.accept(this);
+            System.out.print(",");
+        }
+        System.out.print(") = ");
+        e.e.accept(this);
+        System.out.print("\n");
+        e.next.accept(this);
     }
 
     @Override
     public void visit(Afunmain e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("let _ = ");
+        e.e.accept(this);
+        System.out.print("\n");
     }
 
     @Override
     public void visit(Aparen e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("(");
+        e.e.accept(this);
+        System.out.print(")");
     }
 
     @Override
     public void visit(Aif e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("if (");
+        e.b.accept(this);
+        System.out.print(") then (");
+        if (e.b instanceof Anot) { // NOT NODE => Invert then and else
+            e.e2.accept(this);
+            System.out.print(") else (");
+            e.e1.accept(this);
+            System.out.print(")");
+        } else {
+            e.e1.accept(this);
+            System.out.print(") else (");
+            e.e2.accept(this);
+            System.out.print(")");
+        }
     }
 
     @Override
     public void visit(Alet e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("let ");
+        e.e1.accept(this);
+        System.out.print(" = ");
+        e.e2.accept(this);
+        System.out.print(" in ");
+        e.e3.accept(this);
     }
 
     @Override
     public void visit(Amem e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("mem(");
+        e.e1.accept(this);
+        System.out.print("+");
+        e.e2.accept(this);
+        System.out.print(")");
+        if (e.e3 != null) {
+            System.out.print(" <- ");
+            e.e3.accept(this);
+        }
     }
 
     @Override
     public void visit(Anew e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.print("new ");
+        e.e.accept(this);
     }
     
 }
