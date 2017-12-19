@@ -18,7 +18,33 @@ public class Equation {
         this.t2 = t2;
     }
     
+    public boolean isUnifiable() {
+        return (this.t1.getClass() == this.t2.getClass() || this.t1 instanceof TVar || this.t2 instanceof TVar);
+    }
+    
+    public boolean isEqual() {
+        return (this.t1.getClass() == this.t2.getClass() && !(this.t1 instanceof TVar) && !(this.t1 instanceof TTuple));
+    }
+    
+    @Override
     public String toString() {
         return this.t1.toString() + " = " + this.t2.toString();
     }
+
+    public Type getT1() {
+        return t1;
+    }
+
+    public Type getT2() {
+        return t2;
+    }
+
+    public void setT1(Type t1) {
+        this.t1 = t1;
+    }
+
+    public void setT2(Type t2) {
+        this.t2 = t2;
+    }
+    
 }

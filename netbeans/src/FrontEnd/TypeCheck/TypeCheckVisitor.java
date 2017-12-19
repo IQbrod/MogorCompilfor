@@ -174,7 +174,7 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public void visit(LetRec e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -185,11 +185,11 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
             System.err.println("Fonction non trouvée");
             exit(1);
         }
+        arr.add(new Equation(appT.ts.get(appT.ts.size()-1),type));
         e.e.accept(this, env, appT, arr);
         for (int i = 0; i<e.es.size(); i++) {
             e.es.get(i).accept(this, env, appT.ts.get(i), arr);
         }
-        arr.add(new Equation(appT.ts.get(appT.ts.size()-1),type));
     }
 
     @Override
@@ -197,27 +197,29 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
         /*for (int i = 0 ; i<e.es.size() ; i++) {
             e.es.get(i).accept(this, env, type, arr);
         }*/
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void visit(LetTuple e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void visit(Array e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void visit(Get e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void visit(Put e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
  
 }

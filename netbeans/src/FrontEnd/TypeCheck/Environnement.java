@@ -17,7 +17,7 @@ public class Environnement {
     public Environnement() {
         this.e = new ArrayList();
         ArrayList<Type> arr = new ArrayList();
-        arr.add(new TArray());
+        arr.add(new TString());
         arr.add(new TUnit());
         this.ajout("print_string", new TTuple(arr));
         arr.clear();

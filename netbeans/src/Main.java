@@ -132,6 +132,9 @@ public class Main {
                     for (int i = 0; i<eqArray.size(); i++) {
                         System.out.println(eqArray.get(i).toString());
                     }
+                    System.out.println("------ Résolution d'équation ------");
+                    Solver s = new Solver(eqArray);
+                    s.solve();
                 }  catch (Exception e) {
                     e.printStackTrace();
                 }

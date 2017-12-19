@@ -1,1 +1,2 @@
-print_int (4+5)
+let x = 1 + 2 in
+print_int x
