@@ -12,6 +12,12 @@ import FrontEnd.Generation.VI_ASMLGeneration.ASMLVisitor;
  * @author sazeratj
  */
 public class Afloat {
+    public float f;
+    
+    public Afloat(Float arg) {
+        this.f = arg;
+    }
+    
     public void accept(ASMLVisitor v) {
         v.visit(this);
     }
