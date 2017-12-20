@@ -6,6 +6,8 @@ import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
 import FrontEnd.Generation.III_ReductionNestedLet.NestedLetVisitor;
 import FrontEnd.Generation.II_AlphaConversion.Ids;
 import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
+import FrontEnd.Generation.VI_ASMLGeneration.*;
+import FrontEnd.Generation.VI_ASMLGeneration.ASTAsml.*;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
 import Parser.Type.*;
@@ -26,8 +28,8 @@ public class Main {
         + "║  T   │  --alpha, -a │ AST après AConv   │ AlphaConversion║\n"
         + "║  I   │  --reduc, -r │ AST après RNesLet │ RNestedLet     ║\n"
         + "║  O   │  --close, -c │ AST après CConver │ ClosureConv    ║\n"
-        + "║  N   │  --gen,   -g │ Generation ASML   │ ASMLGeneration ║\n"
-        + "║      │  --opti,  -o │ ASML après Opti   │ Optimisation   ║\n"
+        + "║  N   │  --opti,  -o │ ASML après Opti   │ Optimisation   ║\n"
+        + "║  S   │  --gen,   -g │ Generation ASML   │ ASMLGeneration ║\n"
         + "║      │  --help,  -h │ Display Help      │ Help           ║\n"
         + "║      │  --stg,   -s │ Display String AST│ StringVisitor  ║\n"
         + "╟──────┴──────────────┴───────────────────┴────────────────╢\n"
@@ -206,7 +208,26 @@ public class Main {
                 break;
             case "-g":
             case "--gen":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.println("AST:");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp k = expression.accept(new KNormVisitor());
+                    Exp o = k.accept(new AlphaConversionVisitor(), new ArrayList<Ids>());
+                    Exp r = o.accept(new NestedLetVisitor());
+                    ASMLNode a = r.accept(new ASMLConverterVisitor());
+                    Afunmain f = new Afunmain((ASMLexp) a);
+                    System.out.println("NestedLetReduced AST: ");
+                    f.accept(new ASMLPrintVisitor());
+                    System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-o":
             case "--opti":

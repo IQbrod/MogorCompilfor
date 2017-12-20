@@ -40,55 +40,61 @@ public class ASMLPrintVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Aadd e) {
+        System.out.print("add ");
         e.e1.accept(this);
-        System.out.print(" + ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
     @Override
     public void visit(Aneg e) {
-        System.out.print("-");
+        System.out.print("neg ");
         e.e.accept(this);
     }
 
     @Override
     public void visit(Asub e) {
+        System.out.print("sub ");
         e.e1.accept(this);
-        System.out.print(" - ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
     @Override
     public void visit(Afadd e) {
+        System.out.print("fadd ");
         e.e1.accept(this);
-        System.out.print(" + ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
     @Override
     public void visit(Afdiv e) {
+        System.out.print("fdiv ");
         e.e1.accept(this);
-        System.out.print(" / ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
     @Override
     public void visit(Afmul e) {
+        System.out.print("fmul ");
         e.e1.accept(this);
-        System.out.print(" * ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
     @Override
     public void visit(Afneg e) {
-        System.out.print("-");
+        System.out.print("fneg");
         e.e.accept(this);
     }
 
     @Override
     public void visit(Afsub e) {
+        System.out.print("fsub ");
         e.e1.accept(this);
-        System.out.print(" - ");
+        System.out.print(" ");
         e.e2.accept(this);
     }
 
