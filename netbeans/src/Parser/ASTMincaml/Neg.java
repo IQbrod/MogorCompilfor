@@ -7,6 +7,8 @@ package Parser.ASTMincaml;
 
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
 import FrontEnd.Generation.II_AlphaConversion.Ids;
+import FrontEnd.Generation.IV_ClosureConversion.ClosureVisitor;
+import FrontEnd.Generation.IV_ClosureConversion.Nodes.Node;
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
 import FrontEnd.TypeCheck.Equation;
@@ -43,5 +45,10 @@ public class Neg extends Exp {
     @Override
     public Exp accept(AlphaConversionVisitor v, ArrayList<Ids> changements) {
         return v.visit(this,changements);
+    }
+    
+    @Override
+    public Node accept(ClosureVisitor v) {
+        return v.visit(this);
     }
 }

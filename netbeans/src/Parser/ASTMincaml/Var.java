@@ -7,6 +7,8 @@ package Parser.ASTMincaml;
 
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
 import FrontEnd.Generation.II_AlphaConversion.Ids;
+import FrontEnd.Generation.IV_ClosureConversion.ClosureVisitor;
+import FrontEnd.Generation.IV_ClosureConversion.Nodes.Node;
 import FrontEnd.TypeCheck.AbsTypeCheckVisitor;
 import FrontEnd.TypeCheck.Environnement;
 import FrontEnd.TypeCheck.Equation;
@@ -47,5 +49,10 @@ public class Var extends Exp {
     @Override
     public String toString() {
         return this.id.toString();
+    }
+    
+    @Override
+    public Node accept(ClosureVisitor v) {
+        return v.visit(this);
     }
 }

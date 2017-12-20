@@ -4,6 +4,7 @@ import Parser.ASTMincaml.Exp;
 import Entrainement.*;
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
 import FrontEnd.Generation.III_ReductionNestedLet.NestedLetVisitor;
+import FrontEnd.Generation.II_AlphaConversion.Ids;
 import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
 import FrontEnd.TypeCheck.*;
 import Parser.*;
@@ -169,7 +170,8 @@ public class Main {
                     expression.accept(new PrintVisitor());
                     System.out.println();
                     
-                    Exp k = expression.accept(new AlphaConversionVisitor(), new ArrayList<>());
+                    Exp r = expression.accept(new KNormVisitor());
+                    Exp k = r.accept(new AlphaConversionVisitor(), new ArrayList<>());
                     System.out.println("AlphaConversion AST: ");
                     k.accept(new PrintVisitor());
                     System.out.println();
@@ -189,7 +191,8 @@ public class Main {
                     System.out.println();
                     
                     Exp k = expression.accept(new KNormVisitor());
-                    Exp r = k.accept(new NestedLetVisitor());
+                    Exp o = k.accept(new AlphaConversionVisitor(), new ArrayList<Ids>());
+                    Exp r = o.accept(new NestedLetVisitor());
                     System.out.println("NestedLetReduced AST: ");
                     r.accept(new PrintVisitor());
                     System.out.println();
