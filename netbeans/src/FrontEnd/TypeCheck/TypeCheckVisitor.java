@@ -148,9 +148,8 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
     @Override
     public void visit(If e, Environnement env, Type type, ArrayList<Equation> arr) {
         e.e1.accept(this, env, new TBool(), arr);
-        e.e2.accept(this, env, new TUnit(), arr);
-        e.e3.accept(this, env, new TUnit(), arr);
-        arr.add(new Equation(new TUnit(), type));
+        e.e2.accept(this, env, type, arr);
+        e.e3.accept(this, env, type, arr);
     }
 
     @Override
@@ -174,12 +173,24 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public void visit(LetRec e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Visite de LetRec");
+        ArrayList<Type> arrT = new ArrayList();
+        for (int i = 0; i<e.fd.args.size(); i++) {
+            Type t = Type.gen();
+            env.ajout(e.fd.args.get(i).toString(), t);
+            arrT.add(t);
+        }
+        Type t = Type.gen();
+        arrT.add(t);
+        TTuple fT = new TTuple(arrT);
+        env.ajout(e.fd.id.toString(), fT);
+        e.fd.e.accept(this, env, t, arr);
+        e.e.accept(this, env, type, arr);
     }
 
     @Override
     public void visit(App e, Environnement env, Type type, ArrayList<Equation> arr) {
-        System.out.println("Visite de App");
+        System.out.println("Visite de App " + e.e.toString());
         TTuple appT = (TTuple)env.getTypeById(e.e.toString());
         if (appT == null) {
             System.err.println("Fonction non trouvée");
@@ -194,9 +205,6 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public void visit(Tuple e, Environnement env, Type type, ArrayList<Equation> arr) {
-        /*for (int i = 0 ; i<e.es.size() ; i++) {
-            e.es.get(i).accept(this, env, type, arr);
-        }*/
         throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -5,6 +5,8 @@
  */
 package FrontEnd.TypeCheck;
 import Parser.Type.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author givaudav
@@ -16,6 +18,10 @@ public class Equation {
     public Equation(Type t1, Type t2) {
         this.t1 = t1;
         this.t2 = t2;
+    }
+    
+    public Equation(Equation e) {
+        this(e.getT1(), e.getT2());
     }
     
     public boolean isUnifiable() {

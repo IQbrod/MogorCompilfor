@@ -24,8 +24,8 @@ public class Solver {
         if (list.isEmpty()) {
             return list;
         } else {
-            Equation e = list.get(0);
-            System.out.println(e.getT1().toString() + " = " + e.getT2().toString());
+            Equation e = new Equation(list.get(0));
+            System.out.println("---------- Résolution en cours : " + e.toString());
             if (!(e.isUnifiable())) {
                 System.err.println("Programme mal typé non unifiable");
                 exit(1);
@@ -45,17 +45,12 @@ public class Solver {
                     }
                     return resolution(list);
                 }
-            } else if (e.getT1() instanceof TVar) {
-                for (int i = 0; i<list.size(); i++) {
-                    if (list.get(i).getT1() == e.getT1()) {
-                        list.get(i).setT1(e.getT1());
-                    }
-                    if (list.get(i).getT2() == e.getT1()) {
-                        list.get(i).setT2(e.getT1());
-                    }
-                }
-                return list;
-                //return resolution(list);
+            } else if (e.getT1() instanceof TVar && !(e.getT2() instanceof TVar)) {
+                replace(list, (TVar)e.getT1(), e.getT2());
+                return resolution(list);
+            } else if (!(e.getT1() instanceof TVar) && e.getT2() instanceof TVar) {
+                replace(list, (TVar)e.getT2(), e.getT1());
+                return resolution(list);
             } else {
                 list.remove(0);
                 list.add(e);
@@ -70,6 +65,27 @@ public class Solver {
             System.out.println("Programme bien typé");
         } else {
             System.out.println("Résolution non terminée"); 
+        }
+    }
+    
+    private void replace(ArrayList<Equation> list, TVar toReplace, Type replace) {
+        for (int i = 0; i<list.size(); i++) {
+            if (list.get(i).getT1() instanceof TTuple) {
+                TTuple t = (TTuple)list.get(i).getT1();
+                for (int j = 0; j<t.ts.size(); j++) {
+                    if (t.ts.get(j) == toReplace) {t.ts.set(j, replace);}
+                }
+            }
+            
+            if (list.get(i).getT2() instanceof TTuple) {
+                TTuple t = (TTuple)list.get(i).getT2();
+                for (int j = 0; j<t.ts.size(); j++) {
+                    if (t.ts.get(j) == toReplace) {t.ts.set(j, replace);}
+                }
+            }
+            
+            if (list.get(i).getT1() == toReplace) {list.get(i).setT1(replace);}
+            if (list.get(i).getT2() == toReplace) {list.get(i).setT2(replace);}
         }
     }
 }
