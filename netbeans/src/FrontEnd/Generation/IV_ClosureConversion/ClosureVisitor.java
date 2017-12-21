@@ -5,38 +5,38 @@
  */
 package FrontEnd.Generation.IV_ClosureConversion;
 
-import FrontEnd.Generation.IV_ClosureConversion.Nodes.Node;
 import Parser.*;
 import java.util.*;
 import Parser.ASTMincaml.*;
 
 public interface ClosureVisitor {
 
-    public Node visit(Unit e);
-    public Node visit(Bool e);
-    public Node visit(Int e);
-    public Node visit(Flt e);
-    public Node visit(Not e);
-    public Node visit(Neg e);
-    public Node visit(Add e);
-    public Node visit(Sub e);
-    public Node visit(FNeg e);
-    public Node visit(FAdd e);
-    public Node visit(FSub e);
-    public Node visit(FMul e);
-    public Node visit(FDiv e);
-    public Node visit(Eq e);
-    public Node visit(LE e);
-    public Node visit(If e);
-    public Node visit(Let e);
-    public Node visit(Var e);
-    public Node visit(LetRec e);
-    public Node visit(App e);
-    public Node visit(Tuple e);
-    public Node visit(LetTuple e);
-    public Node visit(Array e);
-    public Node visit(Get e);
-    public Node visit(Put e);
+    public Exp visit(Unit e);
+    public Exp visit(Bool e);
+    public Exp visit(Int e);
+    public Exp visit(Flt e);
+    public Exp visit(Not e);
+    public Exp visit(Neg e);
+    public Exp visit(Add e);
+    public Exp visit(Sub e);
+    public Exp visit(FNeg e);
+    public Exp visit(FAdd e);
+    public Exp visit(FSub e);
+    public Exp visit(FMul e);
+    public Exp visit(FDiv e);
+    public Exp visit(Eq e);
+    public Exp visit(LE e);
+    public Exp visit(If e);
+    public Exp visit(Let e);
+    public Exp visit(Var e);
+    public Exp visit(LetRec e);
+    public Exp visit(App e);
+    public Exp visit(Tuple e);
+    public Exp visit(LetTuple e);
+    public Exp visit(Array e);
+    public Exp visit(Get e);
+    public Exp visit(Put e);
+    public Exp visit(Fct e);
 }
 
 
