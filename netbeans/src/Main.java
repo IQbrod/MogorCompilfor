@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public class Main {
     static String option = "";
     static String fileName = "";
+    static String outputFile = "";
     final static String help = "\n"
         + "╔══════════════════════════════════════════════════════════╗\n"
-        + "║         USAGE: ./mincaml [options] [fileName.ml]         ║\n"
+        + "║   USAGE:  ./mincaml [options] [fileName.ml] (-o [file])  ║\n"
+        + "║   USAGE:  ./mincaml (-o [file]) [options] [fileName.ml]  ║\n"
         + "╟──────┬──────────────┬───────────────────┬────────────────╢\n"
         + "║      │  --parse, -p │ Parse l'AST       │ default        ║\n"
         + "║      │  --train, -e │ Copie l'AST       │ Entrainement   ║\n"
@@ -29,12 +31,14 @@ public class Main {
         + "║  T   │  --alpha, -a │ AST après AConv   │ AlphaConversion║\n"
         + "║  I   │  --reduc, -r │ AST après RNesLet │ RNestedLet     ║\n"
         + "║  O   │  --close, -c │ AST après CConver │ ClosureConv    ║\n"
-        + "║  N   │  --opti,  -o │ ASML après Opti   │ Optimisation   ║\n"
+        + "║  N   │  --output,-o │ Choix Fichier Out │ Fichier Sortie ║\n"
         + "║  S   │  --gen,   -g │ Generation ASML   │ ASMLGeneration ║\n"
         + "║      │  --help,  -h │ Display Help      │ Help           ║\n"
         + "║      │  --stg,   -s │ Display String AST│ StringVisitor  ║\n"
+        + "║      │         -arm │ Mincaml to ARM    │ ARM Generation ║\n"
         + "╟──────┴──────────────┴───────────────────┴────────────────╢\n"
-        + "║        fileName.ml :  file in \"mincaml\" directory        ║\n"    
+        + "║               fileName.ml :  File to Parse               ║\n"
+        + "║               file        :  Output File                 ║\n"
         + "╚══════════════════════════════════════════════════════════╝\n";
     
     static public void main(String argv[]) {    
@@ -42,21 +46,137 @@ public class Main {
         String rep = System.getProperty("user.dir");
         rep = rep.substring(0,rep.indexOf("netbeans"));
         String mincaml = rep + "mincaml/";
+        
         /* Traitement des arguments */
         if (argv.length == 0) { // Aucun argument
             option = "-h";
-        } else if (argv.length == 1) { // 1 seul argument (fichier.ml)
-            option = argv[0];
-            if (! (option.equals("-h") || option.equals("--help")) ) {
-                System.out.println("\033[33mMissing Argument FileName\033[0m");
-                java.util.Scanner s = new java.util.Scanner(System.in);
-                System.out.print("Select file to parse (.ml): ");
-                fileName = mincaml + s.nextLine();
-                s.close();
+        } 
+        
+        else if (argv.length == 1) { // 1 seul argument
+            
+            if (argv[0].contains(".ml")) { // User a passé l'argument fileName.ml
+                System.out.println("\033[33mMissing Argument Option (-h for help)\033[0m");
+                System.out.println("\033[33mUsing -arm by default\033[0m");
+                option = "-arm";
+                fileName = argv[0];
+            } 
+            
+            else if (argv[0].charAt(0) == '-') { // User a passé l'argument option
+                option = argv[0];
+                if (! (option.equals("-h") || option.equals("--help") || option.equals("-o") || option.equals("--output")) ) {
+                    System.out.println("\033[33mMissing Argument FileName (-h for help)\033[0m");
+                    java.util.Scanner s = new java.util.Scanner(System.in);
+                    System.out.print("Select file to parse (.ml): ");
+                    fileName = s.nextLine();
+                    s.close();
+                }
+            } 
+            
+            else { // Argument invalide
+                option = argv[0];
             }
-        } else { // Sinon on utilise les paramètres
-            option = argv[0];
-            fileName = argv[1];
+        } 
+        
+        else { 
+            if (argv[0].contains(".ml")) { // Argument1 = fileName.ml
+                if (argv.length == 3) {
+                    System.out.println("\033[33mMissing Argument Option\033[0m");
+                    System.out.println("\033[33mUsing -arm by default\033[0m");
+                    option = "-arm";
+                    fileName = argv[0];
+                    if (argv[1].equals("-o") || argv[1].equals("--output")) {
+                        outputFile = argv[2];
+                    } else {
+                        option = "--args";
+                    }
+                }
+                
+                else if (argv.length == 2) {
+                    if (argv[1].contains("-")) {
+                        fileName = argv[0];
+                        option = argv[1];
+                    } else {
+                        System.err.println("Too few arguments (-h for help)");
+                        option = "--args";
+                    }
+                } else {
+                    System.err.println("Too many arguments (-h for help)");
+                    option = "--args";
+                }
+            } 
+            
+            else if (argv[0].charAt(0) == '-') { // Argument1 = option
+                option = argv[0];
+                if (option.equals("-h") || option.equals("--help")) {
+                    /* Nothing to do here */
+                } else if (option.equals("-o") || option.equals("--output")) {
+                    outputFile = argv[1];
+                    if (argv.length == 2) {
+                        System.err.println("Too few arguments (-h for help)");
+                        option = "--args";
+                    } else if (argv.length == 3) {
+                        if (argv[2].contains(".ml")) { // User a passé l'argument fileName.ml
+                            System.out.println("\033[33mMissing Argument Option (-h for help)\033[0m");
+                            System.out.println("\033[33mUsing -arm by default\033[0m");
+                            option = "-arm";
+                            fileName = argv[2];
+                        } else {
+                            option = argv[2]+".";
+                        }
+                    } else if (argv.length == 4) {
+                        if (argv[2].charAt(0) == '-') { // User a passé l'argument option
+                            option = argv[2];
+                            if(argv[3].contains(".ml")) { // User a passé l'argument fileName.ml
+                                fileName = argv[3];
+                            } else {
+                                System.err.println("Not a mincaml file "+argv[3]);
+                                option = "--args";
+                            }
+                        } else {
+                            option = argv[2]+".";
+                        }
+                    } else {
+                        System.err.println("Too many arguments (-h for help)");
+                        option = "--args";
+                    }
+                } else {
+                    if(argv[1].contains(".ml")) { // User a passé l'argument fileName.ml
+                        fileName = argv[1];
+                    } else {
+                        System.err.println("Not a mincaml file "+argv[1]);
+                        option = "--args";
+                    }
+                    /* Si il y a des arguments suivants il faut "-o file" */
+                    if(argv.length == 3 || argv.length > 4) {
+                        System.err.println("Too many arguments (-h for help)");
+                        option = "--args";
+                    }
+                    if(argv.length == 4) {
+                        if (argv[2].equals("-o") || argv[2].equals("--output")) {
+                            if(argv[3].contains(".ml")) { // User a passé l'argument fileName.ml
+                                fileName = argv[3];
+                            } else {
+                                System.err.println("Not a mincaml file "+argv[3]);
+                                option = "--args";
+                            }
+                        } else {
+                            System.err.println("Invalid option "+argv[2]);
+                            option = "--args";
+                        }
+                    }
+                    
+                }
+            }
+            
+            else { // Argument1 invalide
+                option = argv[0];
+            }
+        }
+        
+        /* TRAITEMENT FILENAME */
+        File fi = new File(fileName);
+        if(! fi.exists()) { 
+            fileName = mincaml + fileName;
         }
        
         /* Traitements des options */
@@ -75,11 +195,6 @@ public class Main {
                     System.out.print("AST: ");
                     expression.accept(new PrintVisitor());
                     System.out.println();
-                    
-                    System.out.print("Height: ");
-                    ObjVisitor<Integer> v = new HeightVisitor();
-                    int height = expression.accept(v);
-                    System.out.println(height);
                 }  catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -226,6 +341,7 @@ public class Main {
                 }
                 break;
             case "-g":
+            case "-asml":
             case "--gen":
                 try {
                     Parser p = new Parser(new Lexer(new FileReader(fileName)));
@@ -241,7 +357,7 @@ public class Main {
                     Exp r = o.accept(new NestedLetVisitor());
                     ASMLNode a = r.accept(new ASMLConverterVisitor());
                     Afunmain f = new Afunmain((ASMLexp) a);
-                    System.out.println("NestedLetReduced AST: ");
+                    System.out.println("ASML Code: ");
                     f.accept(new ASMLPrintVisitor());
                     System.out.println();
                 }  catch (Exception e) {
@@ -249,14 +365,14 @@ public class Main {
                 }
                 break;
             case "-o":
-            case "--opti":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+            case "--output":
+                System.out.println("\033[33mOption -o: Missing Arguments File & FileName.ml\033[0m");
+            case "--args":
+                /* Nothing to do here */
                 break;
             default:
-                System.out.println(help);
                 System.err.println("Unknown Option "+argv[0]);
-                ;
-
+                System.out.println(help);
         }
     }
 }
