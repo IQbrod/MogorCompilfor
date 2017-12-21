@@ -144,10 +144,11 @@ public class ASMLPrintVisitor implements ASMLVisitor {
         System.out.print("call ");
         e.lb.accept(this);
         System.out.print("(");
-        for (Aident a : e.args) {
-            a.accept(this);
+        for (int i=0; i<e.args.size()-1;i++) {
+            e.args.get(i).accept(this);
             System.out.print(",");
         }
+        e.args.get(e.args.size()-1).accept(this);
         System.out.print(")");
     }
 

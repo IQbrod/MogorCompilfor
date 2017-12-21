@@ -23,7 +23,7 @@ public class Let extends Exp {
     public final Id id;
     public final Type t;
     public final Exp e1;
-    public final Exp e2;
+    public Exp e2;
 
     public Let(Id id, Type t, Exp e1, Exp e2) {
         this.id = id;
