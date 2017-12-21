@@ -113,14 +113,57 @@ public class Main {
                     if (argv.length == 2) {
                         System.err.println("Too few arguments (-h for help)");
                         option = "--args";
-                    } else if (argv.length > 4) {
+                    } else if (argv.length == 3) {
+                        if (argv[2].contains(".ml")) { // User a passé l'argument fileName.ml
+                            System.out.println("\033[33mMissing Argument Option (-h for help)\033[0m");
+                            System.out.println("\033[33mUsing -arm by default\033[0m");
+                            option = "-arm";
+                            fileName = argv[2];
+                        } else {
+                            option = argv[2]+".";
+                        }
+                    } else if (argv.length == 4) {
+                        if (argv[2].charAt(0) == '-') { // User a passé l'argument option
+                            option = argv[2];
+                            if(argv[3].contains(".ml")) { // User a passé l'argument fileName.ml
+                                fileName = argv[3];
+                            } else {
+                                System.err.println("Not a mincaml file "+argv[3]);
+                                option = "--args";
+                            }
+                        } else {
+                            option = argv[2]+".";
+                        }
+                    } else {
                         System.err.println("Too many arguments (-h for help)");
                         option = "--args";
-                    } else {
-                        /* A COMPLETER */
                     }
                 } else {
-                    /* A COMPLETER */
+                    if(argv[1].contains(".ml")) { // User a passé l'argument fileName.ml
+                        fileName = argv[1];
+                    } else {
+                        System.err.println("Not a mincaml file "+argv[1]);
+                        option = "--args";
+                    }
+                    /* Si il y a des arguments suivants il faut "-o file" */
+                    if(argv.length == 3 || argv.length > 4) {
+                        System.err.println("Too many arguments (-h for help)");
+                        option = "--args";
+                    }
+                    if(argv.length == 4) {
+                        if (argv[2].equals("-o") || argv[2].equals("--output")) {
+                            if(argv[3].contains(".ml")) { // User a passé l'argument fileName.ml
+                                fileName = argv[3];
+                            } else {
+                                System.err.println("Not a mincaml file "+argv[3]);
+                                option = "--args";
+                            }
+                        } else {
+                            System.err.println("Invalid option "+argv[2]);
+                            option = "--args";
+                        }
+                    }
+                    
                 }
             }
             
@@ -129,7 +172,11 @@ public class Main {
             }
         }
         
-        /* TRAITEMENT FILENAME A COMPLETER */
+        /* TRAITEMENT FILENAME */
+        File fi = new File(fileName);
+        if(! fi.exists()) { 
+            fileName = mincaml + fileName;
+        }
        
         /* Traitements des options */
         switch(option) {

@@ -59,8 +59,7 @@ public class AlphaConversionVisitorTest {
 
             Exp kNormalized = expression.accept(new KNormVisitor());
             String kNormedString = kNormalized.accept(new ToStringVisitor());
-            
-            assertEquals("AST KNormalisé correctement","(let x = 1 in (let y = 2 in (let ?v0 = x in (let ?v1 = y in (?v0 + ?v1)))))",kNormedString);
+                        assertEquals("AST KNormalisé correctement","(let x = 1 in (let y = 2 in (let ?v0 = x in (let ?v1 = y in (?v0 + ?v1)))))",kNormedString);
         }  catch (Exception e) {
             e.printStackTrace();
         }
