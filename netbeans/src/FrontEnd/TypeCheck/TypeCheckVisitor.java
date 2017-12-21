@@ -191,15 +191,23 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
     @Override
     public void visit(App e, Environnement env, Type type, ArrayList<Equation> arr) {
         System.out.println("Visite de App " + e.e.toString());
-        TTuple appT = (TTuple)env.getTypeById(e.e.toString());
-        if (appT == null) {
-            System.err.println("Fonction non trouvée");
+        Type t = env.getTypeById(e.e.toString());
+        if (t instanceof TTuple) {
+            TTuple appT = (TTuple)t;
+            if (appT == null) {
+                System.out.println("\033[32mFonction non trouvée.\033[0m");
+                exit(1);
+            } else if (appT.ts.size()-1 != e.es.size()) {
+                System.out.println("\033[32mNombre d'arguments incorrect.\033[0m");
+                exit(1);
+            }
+            arr.add(new Equation(appT.ts.get(appT.ts.size()-1),type));
+            for (int i = 0; i<e.es.size(); i++) {
+                e.es.get(i).accept(this, env, appT.ts.get(i), arr);
+            }
+        } else if (t instanceof TVar) {
+            System.out.println("Tvar");
             exit(1);
-        }
-        arr.add(new Equation(appT.ts.get(appT.ts.size()-1),type));
-        e.e.accept(this, env, appT, arr);
-        for (int i = 0; i<e.es.size(); i++) {
-            e.es.get(i).accept(this, env, appT.ts.get(i), arr);
         }
     }
 

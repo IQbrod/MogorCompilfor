@@ -5,6 +5,7 @@ import Entrainement.*;
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
 import FrontEnd.Generation.III_ReductionNestedLet.NestedLetVisitor;
 import FrontEnd.Generation.II_AlphaConversion.Ids;
+import FrontEnd.Generation.IV_ClosureConversion.ClosureConversionVisitor;
 import FrontEnd.Generation.I_KNormalisation.KNormVisitor;
 import FrontEnd.Generation.VI_ASMLGeneration.*;
 import FrontEnd.Generation.VI_ASMLGeneration.ASTAsml.*;
@@ -319,7 +320,25 @@ public class Main {
                 break;
             case "-c":
             case "--close":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    System.out.println("AST:");
+                    expression.accept(new PrintVisitor());
+                    System.out.println();
+                    
+                    Exp k = expression.accept(new KNormVisitor());
+                    Exp o = k.accept(new AlphaConversionVisitor(), new ArrayList<Ids>());
+                    Exp r = o.accept(new NestedLetVisitor());
+                    Exp z = r.accept(new ClosureConversionVisitor(r));
+                    System.out.println("ClosureConversion AST: ");
+                    r.accept(new PrintVisitor());
+                    System.out.println();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case "-g":
             case "-asml":
