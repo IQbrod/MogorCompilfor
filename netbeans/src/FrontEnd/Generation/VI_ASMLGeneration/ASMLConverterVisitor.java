@@ -9,6 +9,7 @@ import FrontEnd.Generation.VI_ASMLGeneration.ASTAsml.*;
 import FrontEnd.Generation.VI_ASMLGeneration.Exceptions.BoolException;
 import Parser.ASTMincaml.*;
 import Parser.ObjVisitor;
+import java.util.ArrayList;
 
 /**
  *
@@ -148,7 +149,14 @@ public class ASMLConverterVisitor implements ObjVisitor<ASMLNode> {
 
     @Override
     public ASMLNode visit(App e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ASMLNode x = e.e.accept(this); // Noeud VAR => Retourne un Aident
+        Alabel l = new Alabel( "_min_caml_" + ((Aident)x).id );
+        ArrayList<Aident> lst = new ArrayList<Aident>();
+        for (Exp z : e.es) {
+            lst.add((Aident)z.accept(this));
+        }
+      
+        return new Acall(l,lst);
     }
 
     @Override

@@ -166,11 +166,25 @@ public class KNormVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(App e) {
-        List<Exp> le = new ArrayList<>();
+        App a = new App(e.e.accept(this),new ArrayList<Exp>());
+        Let first = null;
+        Let old = null;
+
         for (Exp g : e.es) {
-            le.add(g.accept(this));
+            Id id = Id.gen();
+            a.es.add(new Var(id));
+            Let x = new Let(id,new TVar(id.toString()),g,null);
+            if(old == null) { // FIRST LET
+                first = x;
+                old = x;
+            }
+            old.e2 = x;
+            old = x;
         }
-        return new App(e.e.accept(this),le);
+        if (first == null) {return a;} //Aucun Argument
+        old.e2 = a;
+        
+        return first;
     }
 
     @Override
