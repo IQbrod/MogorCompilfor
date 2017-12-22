@@ -156,12 +156,7 @@ public class Main {
                     }
                     if(argv.length == 4) {
                         if (argv[2].equals("-o") || argv[2].equals("--output")) {
-                            if(argv[3].contains(".ml")) { // User a passé l'argument fileName.ml
-                                fileName = argv[3];
-                            } else {
-                                System.err.println("Not a mincaml file "+argv[3]);
-                                option = "--args";
-                            }
+                            outputFile = argv[3];
                         } else {
                             System.err.println("Invalid option "+argv[2]);
                             option = "--args";
@@ -181,7 +176,7 @@ public class Main {
         if(! fi.exists() && mincaml != null) { 
             fileName = mincaml + fileName;
         }
-       
+              
         /* Traitements des options */
         switch(option) {
             case "-h":
@@ -190,6 +185,9 @@ public class Main {
                 break;
             case "-p":
             case "--parse":
+                if (! outputFile.equals("")) { // User a utilisé -o
+                    System.out.println("\033[33mOption -o ignorée\033[0m");
+                }
                 try {
                     Parser p = new Parser(new Lexer(new FileReader(fileName)));
                     Exp expression = (Exp) p.parse().value;
@@ -337,7 +335,7 @@ public class Main {
                     Exp r = o.accept(new NestedLetVisitor());
                     Exp z = r.accept(new ClosureConversionVisitor(r));
                     System.out.println("ClosureConversion AST: ");
-                    r.accept(new PrintVisitor());
+                    z.accept(new PrintVisitor());
                     System.out.println();
                 }  catch (Exception e) {
                     e.printStackTrace();
