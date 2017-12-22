@@ -334,7 +334,7 @@ public class Main {
                     Exp r = o.accept(new NestedLetVisitor());
                     Exp z = r.accept(new ClosureConversionVisitor(r));
                     System.out.println("ClosureConversion AST: ");
-                    r.accept(new PrintVisitor());
+                    z.accept(new PrintVisitor());
                     System.out.println();
                 }  catch (Exception e) {
                     e.printStackTrace();
