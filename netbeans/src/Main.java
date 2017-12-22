@@ -252,16 +252,9 @@ public class Main {
                     Parser p = new Parser(new Lexer(new FileReader(fileName)));
                     Exp expression = (Exp) p.parse().value;
                     assert (expression != null);
-
-                    System.out.println("------ Génération d'équations ------");
                     Environnement predef = new Environnement();
                     ArrayList<Equation> eqArray = new ArrayList();
                     expression.accept(new TypeCheckVisitor(), predef, new TUnit(), eqArray);
-                    System.out.println("------ Type equations ------");
-                    for (int i = 0; i<eqArray.size(); i++) {
-                        System.out.println(eqArray.get(i).toString());
-                    }
-                    System.out.println("------ Résolution d'équation ------");
                     Solver s = new Solver(eqArray);
                     s.solve();
                 }  catch (Exception e) {
