@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Fct extends Exp {
 
     public final FunDef fd;
-    public final Exp suite;
+    public Exp suite;
     
     public Fct(FunDef fd, Exp suite) {
         this.fd = fd;

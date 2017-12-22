@@ -143,10 +143,12 @@ public class ClosureConversionVisitor implements ClosureVisitor {
             lastF = f;
             main = f;
         } else {
-            f = new Fct(fd, e.e.accept(this));
+            f = new Fct(fd, e.e);
+            lastF.suite = f;
             lastF = f;
+            e.e.accept(this);
         }
-        return main;
+        return f;
     }
 
     @Override

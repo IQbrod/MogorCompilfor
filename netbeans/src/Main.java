@@ -356,19 +356,19 @@ public class Main {
 
                     Exp a = k.accept(new AlphaConversionVisitor(), new ArrayList<>());
                     Exp r = a.accept(new NestedLetVisitor());
-                    Exp c = r.accept(new ClosureConversionVisitor(r));
-                    
+                    ClosureConversionVisitor ccv = new ClosureConversionVisitor(r);
+                    Exp c = r.accept(ccv);
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
                         expression.accept(new PrintVisitor());
                         System.out.println();
 
                         System.out.println("ClosureConversion AST: ");
-                        c.accept(new PrintVisitor());
+                        ccv.main.accept(new PrintVisitor());
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        c.accept(new PrintVisitor());
+                        ccv.main.accept(new PrintVisitor());
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();

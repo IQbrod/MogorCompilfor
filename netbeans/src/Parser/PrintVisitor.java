@@ -44,6 +44,7 @@ public class PrintVisitor implements Visitor {
 
     public void visit(Add e) {
         if (newline) {
+            System.out.println();
             printIndentation();
             newline = false;
         }
@@ -134,6 +135,7 @@ public class PrintVisitor implements Visitor {
         if (e.e1 instanceof Let) {
             System.out.println();
             indentation++;
+            printIndentation();
         }
         e.e1.accept(this);
         System.out.print(" in");
@@ -143,6 +145,7 @@ public class PrintVisitor implements Visitor {
 
     public void visit(Var e) {
         if (newline) {
+            System.out.println();
             printIndentation();
             newline = false;
         }
@@ -248,11 +251,9 @@ public class PrintVisitor implements Visitor {
     }
 
     public void visit(Fct e) {
-        if (newline) {
-            newline=false;
-            System.out.println();
-            indentation=0;
-        }
+        System.out.println();
+        indentation = 0;
+        newline = false;
         System.out.print("label: ");
         System.out.println("_" + e.fd.id);
         System.out.print("parameters: ");
@@ -266,6 +267,7 @@ public class PrintVisitor implements Visitor {
         if (e.suite instanceof Let) {
             newline = true;
         }
+        indentation = 0;
         e.suite.accept(this);
     }
 

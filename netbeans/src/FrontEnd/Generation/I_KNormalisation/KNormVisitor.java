@@ -161,7 +161,8 @@ public class KNormVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(LetRec e) {
-        return new LetRec(e.fd,e.e.accept(this));
+        FunDef f = new FunDef(e.fd.id, e.fd.type, e.fd.args, e.fd.e.accept(this));
+        return new LetRec(f,e.e.accept(this));
     }
 
     @Override
