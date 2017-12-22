@@ -25,7 +25,6 @@ public class Solver {
             return list;
         } else {
             Equation e = new Equation(list.get(0));
-            System.out.println("---------- Résolution en cours : " + e.toString());
             if (!(e.isUnifiable())) {
                 return list;
             } else if (e.isEqual()) {
