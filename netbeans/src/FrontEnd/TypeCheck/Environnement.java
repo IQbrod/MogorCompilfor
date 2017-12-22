@@ -26,13 +26,15 @@ public class Environnement {
         this.ajout("print_int", new TTuple(arr));
     }
     
+    public Environnement(ArrayList<EnvCouple> arr) {
+        this.e = arr;
+    }
+    
     public void ajout(String id, Type t) {
-            System.out.println("Ajout de " + id + " de type " + t.toString());
             this.e.add(new EnvCouple(id, t));
     }
     
     public Type getTypeById(String id) {
-        System.out.println("Recherche de " + id.toString());
         for (int i = this.e.size()-1 ; i>=0 ; i--) {
             if(e.get(i).getId().equals(id)) {
                return e.get(i).getType();
@@ -44,7 +46,11 @@ public class Environnement {
     public void afficher() {
         System.out.println("Affichage du contenu de l'environnement :");
         for (int i = 0; i<this.e.size(); i++) {
-            System.out.println(this.e.get(i).getId() + " -> " + this.e.get(i).getType());
+            System.out.println(this.e.get(i).getId() + " : " + this.e.get(i).getType());
         }
+    }
+    
+    public ArrayList<EnvCouple> getE() {
+        return this.e;
     }
 }

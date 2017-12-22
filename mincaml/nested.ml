@@ -1,3 +1,3 @@
 let x = 
   let y = 1 + 2 in y
-in x
+in print_int x
