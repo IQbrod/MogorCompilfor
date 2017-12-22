@@ -143,13 +143,12 @@ public class ASMLPrintVisitor implements ASMLVisitor {
     public void visit(Acall e) {
         System.out.print("call ");
         e.lb.accept(this);
-        System.out.print("(");
+        System.out.print(" ");
         for (int i=0; i<e.args.size()-1;i++) {
             e.args.get(i).accept(this);
-            System.out.print(",");
+            System.out.print(" ");
         }
         e.args.get(e.args.size()-1).accept(this);
-        System.out.print(")");
     }
 
     @Override

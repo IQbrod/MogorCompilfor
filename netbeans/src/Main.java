@@ -386,6 +386,7 @@ public class Main {
                     Exp r = a.accept(new NestedLetVisitor());
                     Exp c = r.accept(new ClosureConversionVisitor(r));
                     ASMLNode aexp = c.accept(new ASMLConverterVisitor());
+                    Afunmain main = new Afunmain((ASMLexp)aexp);
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
@@ -393,11 +394,11 @@ public class Main {
                         System.out.println();
 
                         System.out.println("ASML: ");
-                        aexp.accept(new ASMLPrintVisitor());
+                        main.accept(new ASMLPrintVisitor());
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        aexp.accept(new ASMLPrintVisitor());
+                        main.accept(new ASMLPrintVisitor());
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
