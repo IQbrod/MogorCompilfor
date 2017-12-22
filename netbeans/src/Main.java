@@ -44,8 +44,11 @@ public class Main {
     static public void main(String argv[]) {    
         /* Calcule du répertoire MINCAML */
         String rep = System.getProperty("user.dir");
-        rep = rep.substring(0,rep.indexOf("netbeans"));
-        String mincaml = rep + "mincaml/";
+        String mincaml = null;
+        if (rep.contains("MogorCompilfor")) {
+            rep = rep.substring(0,rep.indexOf("MogorCompilfor"));
+            mincaml = rep + "MogorCompilfor/mincaml/";
+        }
         
         /* Traitement des arguments */
         if (argv.length == 0) { // Aucun argument
@@ -175,7 +178,7 @@ public class Main {
         
         /* TRAITEMENT FILENAME */
         File fi = new File(fileName);
-        if(! fi.exists()) { 
+        if(! fi.exists() && mincaml != null) { 
             fileName = mincaml + fileName;
         }
        
@@ -367,11 +370,15 @@ public class Main {
             case "-o":
             case "--output":
                 System.out.println("\033[33mOption -o: Missing Arguments File & FileName.ml\033[0m");
+                break;
             case "--args":
                 /* Nothing to do here */
                 break;
+            case "-arm":
+                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                break;
             default:
-                System.err.println("Unknown Option "+argv[0]);
+                System.err.println("Unknown Option "+option);
                 System.out.println(help);
         }
     }
