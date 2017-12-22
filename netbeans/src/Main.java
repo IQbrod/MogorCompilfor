@@ -353,6 +353,7 @@ public class Main {
                     assert (expression != null);
                     
                     Exp k = expression.accept(new KNormVisitor());
+
                     Exp a = k.accept(new AlphaConversionVisitor(), new ArrayList<>());
                     Exp r = a.accept(new NestedLetVisitor());
                     Exp c = r.accept(new ClosureConversionVisitor(r));

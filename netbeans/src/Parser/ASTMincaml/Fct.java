@@ -31,7 +31,7 @@ public class Fct extends Exp {
 
     @Override
     public void accept(Visitor v) {
-        throw new UnsupportedOperationException("La methode n'est pas implémentée, ce noeud n'est pas utilisé dans ce cas");
+        v.visit(this);
     }
 
     @Override
