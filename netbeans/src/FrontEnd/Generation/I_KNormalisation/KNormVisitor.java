@@ -174,7 +174,8 @@ public class KNormVisitor implements ObjVisitor<Exp> {
         for (Exp g : e.es) {
             Id id = Id.gen();
             a.es.add(new Var(id));
-            Let x = new Let(id,new TVar(id.toString()),g,null);
+            Let x = new Let(id,new TVar(id.toString()),g, new Unit());
+            x = (Let) x.accept(this);
             if(old == null) { // FIRST LET
                 first = x;
                 old = x;
