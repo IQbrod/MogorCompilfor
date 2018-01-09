@@ -15,9 +15,13 @@ import java.util.HashMap;
  */
 public class ARMConverterVisitor implements ASMLVisitor {
     private HashMap<String,String> tab; // Map varname => register
+    private String curName; // Name of the current Let
+    
+    private int regCt; // Last Free register
     
     public ARMConverterVisitor(HashMap<String,String> arg) {
         this.tab = arg;
+        this.regCt = 4;
     }
     
     @Override
@@ -48,6 +52,8 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Aadd e) {
         System.out.print("ADD ");
+        tab.get(curName);
+        System.out.print(", ");
         e.e1.accept(this);
         System.out.print(", ");
         e.e2.accept(this);
@@ -62,6 +68,8 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Asub e) {
         System.out.print("SUB ");
+        tab.get(curName);
+        System.out.print(", ");
         e.e1.accept(this);
         System.out.print(", ");
         e.e2.accept(this);
@@ -160,7 +168,23 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Alet e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /* Enregistre le Let dans TAB */
+        this.curName = e.e1.toString();
+        tab.put(e.e1.toString(), "R"+regCt);
+        regCt++;
+        /* ATTENTION => Ne gère pas pour l'instant la limite de registre d'ARM */
+        if (e.e2 instanceof Aint) {
+            System.out.print("ADD ");
+            tab.get(curName);
+            System.out.print(", ");
+            e.e1.accept(this);
+            System.out.print(", ");
+            e.e2.accept(this);
+            System.out.print("\n"); 
+        } else if (e.e2 instanceof Aident || e.e2 instanceof Alabel) {
+            // Nothing to do => Already in TAB
+        }
+        e.e3.accept(this);
     }
 
     @Override
