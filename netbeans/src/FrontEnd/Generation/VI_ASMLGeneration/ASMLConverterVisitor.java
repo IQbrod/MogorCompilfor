@@ -150,7 +150,7 @@ public class ASMLConverterVisitor implements ObjVisitor<ASMLNode> {
     @Override
     public ASMLNode visit(App e) {
         ASMLNode x = e.e.accept(this); // Noeud VAR => Retourne un Aident
-        Alabel l = new Alabel( "_min_caml_" + ((Aident)x).id );
+        Alabel l = new Alabel( "min_caml_" + ((Aident)x).id );
         ArrayList<Aident> lst = new ArrayList<Aident>();
         for (Exp z : e.es) {
             lst.add((Aident)z.accept(this));
