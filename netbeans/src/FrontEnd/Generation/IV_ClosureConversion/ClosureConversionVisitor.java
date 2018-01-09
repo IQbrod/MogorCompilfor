@@ -6,6 +6,7 @@
 package FrontEnd.Generation.IV_ClosureConversion;
 
 import Parser.ASTMincaml.*;
+import Parser.Id;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import java.util.List;
 public class ClosureConversionVisitor implements ClosureVisitor {
 
     public Exp main;
+    public Exp dernierNoeud;
     public Fct lastF;
+    public ArrayList<FunDef> functions;
 
     public ClosureConversionVisitor() {
         try {
@@ -27,8 +30,10 @@ public class ClosureConversionVisitor implements ClosureVisitor {
     }
 
     public ClosureConversionVisitor(Exp main) {
+        this.functions = new ArrayList<>();
         this.main = main;
         this.lastF = null;
+        this.dernierNoeud = null;
     }
 
     @Override
@@ -116,7 +121,7 @@ public class ClosureConversionVisitor implements ClosureVisitor {
         Let l;
         if (e.e2 instanceof LetRec) {
             LetRec lr = (LetRec) e.e2;
-            l = new Let(e.id, e.t, e.e1.accept(this), lr.e.accept(this));
+            l = new Let(e.id, e.t, e.e1.accept(this), lr.e);
             e.e2.accept(this);
         } else {
             l = new Let(e.id, e.t, e.e1.accept(this), e.e2.accept(this));
@@ -132,16 +137,13 @@ public class ClosureConversionVisitor implements ClosureVisitor {
     @Override
     public Exp visit(LetRec e) {
         FunDef fd = new FunDef(e.fd.id, e.fd.type, e.fd.args, e.fd.e);
+        functions.add(fd);
         Fct f;
         if (lastF == null) {
-            if (!(main instanceof LetRec)) {
-                f = new Fct(fd, main);
-            } else {
-                LetRec lr = (LetRec) main;
-                f = new Fct(fd, lr.e);
-            }
+            f = new Fct(fd, e.e);
             lastF = f;
             main = f;
+            e.e.accept(this);
         } else {
             f = new Fct(fd, e.e);
             lastF.suite = f;

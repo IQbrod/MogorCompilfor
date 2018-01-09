@@ -194,7 +194,7 @@ public class Main {
                     assert (expression != null);
                     
                     System.out.print("AST: ");
-                    expression.accept(new PrintVisitor());
+                    expression.accept(new PrintVisitor(null));
                     System.out.println();
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -211,17 +211,17 @@ public class Main {
                     assert (expression != null);
                     
                     System.out.print("AST: \t\t");
-                    expression.accept(new PrintVisitor());
+                    expression.accept(new PrintVisitor(null));
                     System.out.println();
                     
                     Exp duplicate = expression.accept(new DuplicateVisitor());
                     System.out.print("Duplicated AST: \t");
-                    duplicate.accept(new PrintVisitor());
+                    duplicate.accept(new PrintVisitor(null));
                     System.out.println();
                     
                     Exp duplicate2 = expression.accept(new DuplicateVisitor2());
                     System.out.print("Duplicated2 AST: ");
-                    duplicate2.accept(new PrintVisitor());
+                    duplicate2.accept(new PrintVisitor(null));
                     System.out.println();
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -271,15 +271,15 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("KNorm AST: ");
-                        k.accept(new PrintVisitor());
+                        k.accept(new PrintVisitor(null));
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        k.accept(new PrintVisitor());
+                        k.accept(new PrintVisitor(null));
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -297,15 +297,15 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("AlphaConversion AST: ");
-                        a.accept(new PrintVisitor());
+                        a.accept(new PrintVisitor(null));
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        a.accept(new PrintVisitor());
+                        a.accept(new PrintVisitor(null));
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -324,15 +324,15 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("NestedLet AST: ");
-                        r.accept(new PrintVisitor());
+                        r.accept(new PrintVisitor(null));
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        r.accept(new PrintVisitor());
+                        r.accept(new PrintVisitor(null));
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -353,15 +353,15 @@ public class Main {
                     Exp c = r.accept(ccv);
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("ClosureConversion AST: ");
-                        ccv.main.accept(new PrintVisitor());
+                        ccv.main.accept(new PrintVisitor(ccv.functions));
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        ccv.main.accept(new PrintVisitor());
+                        ccv.main.accept(new PrintVisitor(ccv.functions));
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -384,7 +384,7 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("ASML: ");
