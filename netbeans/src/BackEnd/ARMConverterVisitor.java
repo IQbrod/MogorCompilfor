@@ -15,9 +15,18 @@ import java.util.HashMap;
  */
 public class ARMConverterVisitor implements ASMLVisitor {
     private HashMap<String,String> tab; // Map varname => register
+    private String curName; // Name of the current Let
     
-    public ARMConverterVisitor(HashMap<String,String> arg) {
-        this.tab = arg;
+    private int regCt; // Last Free register
+    
+    public ARMConverterVisitor() {
+        this.tab = new HashMap<String,String>();
+        this.regCt = 4;
+    }
+    
+    private void pushregister(String r, String v) {
+        System.out.print("SUB " + r + ", " + r + ", " + r + "\n");
+        System.out.print("ADD " + r + ", " + r + ", " + v + "\n");
     }
     
     @Override
@@ -42,12 +51,14 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Alabel e) {
-        System.out.print(tab.get(e.id));
+        System.out.print(e.id);
     }
 
     @Override
     public void visit(Aadd e) {
         System.out.print("ADD ");
+        System.out.print(tab.get(curName));
+        System.out.print(", ");
         e.e1.accept(this);
         System.out.print(", ");
         e.e2.accept(this);
@@ -62,9 +73,11 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Asub e) {
         System.out.print("SUB ");
+        System.out.print(tab.get(curName));
+        System.out.print(", ");
         e.e1.accept(this);
         System.out.print(", ");
-        e.e2.accept(this);
+        e.e2.accept(this);tab.get(curName);
         System.out.print("\n");
     }
 
@@ -125,7 +138,14 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Acall e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i = 0;
+        for (Aident a : e.args) {
+            pushregister("R"+i,tab.get(a.id));
+            i++;
+        }
+        System.out.print("bl ");
+        e.lb.accept(this);
+        System.out.print("\n");
     }
 
     @Override
@@ -145,7 +165,8 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Afunmain e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(".text\n.global_start\n\n_start:");
+        e.e.accept(this);
     }
 
     @Override
@@ -160,7 +181,21 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Alet e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /* Enregistre le Let dans TAB */
+        this.curName = e.e1.id;
+        tab.put(((Aident)e.e1).id, "R"+regCt);
+        regCt++;
+        /* ATTENTION => Ne gère pas pour l'instant la limite de registre d'ARM */
+        if (e.e2 instanceof Aint) {
+            pushregister(tab.get(curName),"#"+((Aint)e.e2).i);
+        } else if (e.e2 instanceof Aident) {
+            pushregister(tab.get(curName),tab.get(((Aident)e.e2).toString()));
+        } else if (e.e2 instanceof Alabel) {
+            pushregister(tab.get(curName),tab.get(((Alabel)e.e2).toString()));
+        } else {
+            e.e2.accept(this);
+        }
+        e.e3.accept(this);
     }
 
     @Override

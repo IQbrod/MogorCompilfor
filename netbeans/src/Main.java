@@ -1,5 +1,6 @@
 
 
+import BackEnd.ARMConverterVisitor;
 import Parser.ASTMincaml.Exp;
 import Entrainement.*;
 import FrontEnd.Generation.II_AlphaConversion.AlphaConversionVisitor;
@@ -406,7 +407,33 @@ public class Main {
                 /* Nothing to do here */
                 break;
             case "-arm":
-                System.out.println("\033[33mNot Yet Implemented\033[0m");
+                try {
+                    Parser p = new Parser(new Lexer(new FileReader(fileName)));
+                    Exp expression = (Exp) p.parse().value;
+                    assert (expression != null);
+                    
+                    Exp k = expression.accept(new KNormVisitor());
+                    Exp a = k.accept(new AlphaConversionVisitor(), new ArrayList<>());
+                    Exp r = a.accept(new NestedLetVisitor());
+                    Exp c = r.accept(new ClosureConversionVisitor(r));
+                    ASMLNode aexp = c.accept(new ASMLConverterVisitor());
+                    Afunmain main = new Afunmain((ASMLexp)aexp);
+                    
+                    if (outputFile.equals("")) { // User n'a pas utilisé -o
+                        System.out.println("AST:");
+                        expression.accept(new PrintVisitor());
+                        System.out.println();
+
+                        System.out.println("ARM: ");
+                        main.accept(new ARMConverterVisitor());
+                        System.out.println();
+                    } else {
+                        System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
+                        main.accept(new ARMConverterVisitor());
+                    }
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 System.err.println("Unknown Option "+option);
