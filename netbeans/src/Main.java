@@ -358,11 +358,11 @@ public class Main {
                         System.out.println();
 
                         System.out.println("ClosureConversion AST: ");
-                        ccv.main.accept(new PrintVisitor(ccv.functions));
+                        ccv.main.accept(new PrintVisitor(ccv));
                         System.out.println();
                     } else {
                         System.setOut(new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)), true));
-                        ccv.main.accept(new PrintVisitor(ccv.functions));
+                        ccv.main.accept(new PrintVisitor(ccv));
                     }
                 }  catch (Exception e) {
                     e.printStackTrace();
@@ -421,7 +421,7 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
 
                         System.out.println("ARM: ");

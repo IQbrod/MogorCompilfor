@@ -1,5 +1,6 @@
 package Parser;
 
+import FrontEnd.Generation.IV_ClosureConversion.ClosureConversionVisitor;
 import Parser.ASTMincaml.*;
 import java.util.*;
 
@@ -7,12 +8,12 @@ public class PrintVisitor implements Visitor {
 
     public int indentation;
     public boolean newline;
-    public ArrayList<FunDef> functions;
+    public ClosureConversionVisitor ccv;
 
-    public PrintVisitor(ArrayList<FunDef> functions) {
+    public PrintVisitor(ClosureConversionVisitor ccv) {
         newline = false;
         indentation = 0;
-        this.functions = functions;
+        this.ccv = ccv;
     }
 
     public void visit(Unit e) {
@@ -180,23 +181,64 @@ public class PrintVisitor implements Visitor {
     }
 
     public void visit(LetRec e) {
-        indentation = 0;
-        if (newline) {
+        if (ccv != null) {
             System.out.println();
-            printIndentation();
+            indentation = 0;
             newline = false;
+            System.out.print("label: ");
+            System.out.println("_" + e.fd.id);
+            System.out.print("parameters: ");
+            for (Id i : e.fd.args) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+            System.out.print("free variables : ");
+            ArrayList<Id> ids = ccv.freeVar.get(e.fd.id);
+            if (ids != null) {
+                for (int i = 0; i < ids.size(); i++) {
+                    if (i != ids.size() - 1) {
+                        System.out.print(ids.get(i) + ", ");
+                    } else {
+                        System.out.println(ids.get(i));
+                    }
+                }
+            } else {
+                System.out.println("");
+            }
+            System.out.print("code:");
+            newline = true;
+            indentation++;
+            e.fd.e.accept(this);
+            indentation = 0;
+            newline=true;
+            e.e.accept(this);
+        } else {
+            if (newline) {
+                System.out.println();
+                indentation = 0;
+                newline = false;
+            }
+            System.out.print("let rec " + e.fd.id + " ");
+            printInfix(e.fd.args, " ");
+            System.out.println(" =");
+            indentation++;
+            printIndentation();
+            e.fd.e.accept(this);
+            if (e.fd.e instanceof LetRec) {
+                System.out.print("in ");
+            } else {
+                System.out.print(" in ");
+            }
+            indentation = 0;
+            if (e.e instanceof Var) {
+                e.e.accept(this);
+                System.out.println();
+            } else {
+                newline = true;
+                e.e.accept(this);
+                System.out.println();
+            }    
         }
-        System.out.print("let rec " + e.fd.id + " ");
-        printInfix(e.fd.args, " ");
-        System.out.println(" =");
-        indentation++;
-        printIndentation();
-        e.fd.e.accept(this);
-        System.out.print(" in ");
-        newline = true;
-        indentation = 0;
-        e.e.accept(this);
-        System.out.println();
     }
 
     public void visit(App e) {
@@ -205,11 +247,18 @@ public class PrintVisitor implements Visitor {
             newline = false;
             printIndentation();
         }
-        System.out.print("apply_direct(_");
-        e.e.accept(this);
-        System.out.print(",(");
-        printInfix2(e.es, ",");
-        System.out.print("))");
+        if (ccv != null) {
+            System.out.print("apply_direct(_");
+            e.e.accept(this);
+            System.out.print(",(");
+            printInfix2(e.es, ",");
+            System.out.print("))");
+        } else {
+            e.e.accept(this);
+            System.out.print("(");
+            printInfix2(e.es, " ");
+            System.out.print(")");
+        }
     }
 
     public void visit(Tuple e) {
@@ -251,27 +300,6 @@ public class PrintVisitor implements Visitor {
         System.out.print(") <- ");
         e.e3.accept(this);
         System.out.print(")");
-    }
-
-    public void visit(Fct e) {
-        System.out.println();
-        indentation = 0;
-        newline = false;
-        System.out.print("label: ");
-        System.out.println("_" + e.fd.id);
-        System.out.print("parameters: ");
-        for (Id i : e.fd.args) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        System.out.println("code:");
-        indentation++;
-        e.fd.e.accept(this);
-        if (e.suite instanceof Let) {
-            newline = true;
-        }
-        indentation = 0;
-        e.suite.accept(this);
     }
 
     public void printIndentation() {

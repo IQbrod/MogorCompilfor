@@ -8,7 +8,9 @@ package FrontEnd.Generation.IV_ClosureConversion;
 import Parser.ASTMincaml.*;
 import Parser.Id;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,8 +20,9 @@ public class ClosureConversionVisitor implements ClosureVisitor {
 
     public Exp main;
     public Exp dernierNoeud;
-    public Fct lastF;
+    public LetRec lastF;
     public ArrayList<FunDef> functions;
+    public HashMap<Id, ArrayList<Id>> freeVar;
 
     public ClosureConversionVisitor() {
         try {
@@ -31,6 +34,7 @@ public class ClosureConversionVisitor implements ClosureVisitor {
 
     public ClosureConversionVisitor(Exp main) {
         this.functions = new ArrayList<>();
+        this.freeVar = new HashMap<Id, ArrayList<Id>>();
         this.main = main;
         this.lastF = null;
         this.dernierNoeud = null;
@@ -134,22 +138,74 @@ public class ClosureConversionVisitor implements ClosureVisitor {
         return new Var(e.id);
     }
 
+    public boolean estUnEntier(String chaine) {
+        try {
+            Integer.parseInt(chaine);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void freeVariables(LetRec f) {
+        //Une variable libre est une variables en partie droite d'un let qui n'est pas un argument
+        Exp e = f.e;
+        while (e != null) {
+            if (e instanceof Let) {
+                Let l = (Let) e;
+                if (l.e1 instanceof Eq) {
+                    Eq eq = (Eq) l.e1;
+                    if (eq.e2 instanceof Var) {
+                        Var v = (Var) eq.e2;
+                        if (!estUnEntier(v.id.toString())) {
+                            //On verifie que c'est un parametre
+                            boolean trouve = false;
+                            for (int i = 0; i < f.fd.args.size(); i++) {
+                                if (v.id.equals(f.fd.args.get(i))) {
+                                    //C'est un parametre
+                                    trouve = true;
+                                }
+                            }
+                            //Si ce n'est pas un parametre
+                            if (!trouve) {
+                                ArrayList<Id> ids = freeVar.get(f.fd.id);
+                                if (ids == null) {
+                                    ids = new ArrayList<>();
+                                }
+                                ids.add(v.id);
+                                freeVar.put(f.fd.id, ids);
+                            }
+                        }
+                    }
+                }
+                if (l.e2 instanceof Let) {
+                    e = l.e2;
+                } else {
+                    e = null;
+                }
+            } else {
+                e = null;
+            }
+        }
+    }
+
     @Override
     public Exp visit(LetRec e) {
         FunDef fd = new FunDef(e.fd.id, e.fd.type, e.fd.args, e.fd.e);
         functions.add(fd);
-        Fct f;
+        LetRec f;
         if (lastF == null) {
-            f = new Fct(fd, e.e);
+            f = new LetRec(fd, e.e);
             lastF = f;
             main = f;
             e.e.accept(this);
         } else {
-            f = new Fct(fd, e.e);
-            lastF.suite = f;
+            f = new LetRec(fd, e.e);
+            lastF = f;
             lastF = f;
             e.e.accept(this);
         }
+        freeVariables(f);
         return f;
     }
 
@@ -189,10 +245,5 @@ public class ClosureConversionVisitor implements ClosureVisitor {
     @Override
     public Exp visit(Put e) {
         return new Put(e.e1.accept(this), e.e2.accept(this), e.e3.accept(this));
-    }
-
-    @Override
-    public Exp visit(Fct e) {
-        return new Fct(e.fd, e.suite.accept(this));
     }
 }

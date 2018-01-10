@@ -36,7 +36,6 @@ public interface ClosureVisitor {
     public Exp visit(Array e);
     public Exp visit(Get e);
     public Exp visit(Put e);
-    public Exp visit(Fct e);
 }
 
 
