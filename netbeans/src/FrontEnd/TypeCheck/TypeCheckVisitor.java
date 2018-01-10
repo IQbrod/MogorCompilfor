@@ -201,7 +201,9 @@ public class TypeCheckVisitor implements AbsTypeCheckVisitor {
 
     @Override
     public void visit(Tuple e, Environnement env, Type type, ArrayList<Equation> arr) {
-        throw new UnsupportedOperationException("Not implemented yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i =0; i<e.es.size();i++) {
+            e.es.get(i).accept(this, env, type, arr);
+        }
     }
 
     @Override
