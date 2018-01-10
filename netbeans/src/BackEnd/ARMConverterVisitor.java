@@ -18,10 +18,12 @@ public class ARMConverterVisitor implements ASMLVisitor {
     private String curName; // Name of the current Let
     
     private int regCt; // Last Free register
+    private int ifCt;
     
     public ARMConverterVisitor() {
         this.tab = new HashMap<String,String>();
         this.regCt = 4;
+        this.ifCt = 0;
     }
     
     private void pushregister(String r, String v) {
@@ -176,7 +178,15 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Aif e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.b.accept(this);
+        System.out.print("true" + this.ifCt + "\n");
+        e.e2.accept(this);
+        System.out.print("b done" + this.ifCt + "\n");
+        System.out.print("true" + this.ifCt + ": ");
+        e.e1.accept(this);
+        System.out.print("\n");
+        System.out.print("done" + this.ifCt + ": ");
+        this.ifCt++;
     }
 
     @Override
