@@ -7,10 +7,12 @@ public class PrintVisitor implements Visitor {
 
     public int indentation;
     public boolean newline;
+    public ArrayList<FunDef> functions;
 
-    public PrintVisitor() {
+    public PrintVisitor(ArrayList<FunDef> functions) {
         newline = false;
         indentation = 0;
+        this.functions = functions;
     }
 
     public void visit(Unit e) {
@@ -203,10 +205,11 @@ public class PrintVisitor implements Visitor {
             newline = false;
             printIndentation();
         }
+        System.out.print("apply_direct(_");
         e.e.accept(this);
-        System.out.print("(");
-        printInfix2(e.es, " ");
-        System.out.print(")");
+        System.out.print(",(");
+        printInfix2(e.es, ",");
+        System.out.print("))");
     }
 
     public void visit(Tuple e) {
