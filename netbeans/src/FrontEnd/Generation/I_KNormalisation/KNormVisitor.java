@@ -124,24 +124,16 @@ public class KNormVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(Eq e) {
-        Id id1 = Id.gen(); Var v1 = new Var(id1);
-        Id id2 = Id.gen(); Var v2 = new Var(id2);
-        Eq f = new Eq(v1,v2);
-        Let l2 = new Let(id2,new TBool(), e.e2.accept(this), f);
-        Let l1 = new Let(id1,new TBool(), e.e1.accept(this), l2);
-        
-        return l1;
+        Exp f1 = e.e1.accept(this);
+        Exp f2 = e.e2.accept(this);
+        return new Eq(f1, f2);
     }
 
     @Override
     public Exp visit(LE e) {
-        Id id1 = Id.gen(); Var v1 = new Var(id1);
-        Id id2 = Id.gen(); Var v2 = new Var(id2);
-        LE f = new LE(v1,v2);
-        Let l2 = new Let(id2,new TBool(), e.e2.accept(this), f);
-        Let l1 = new Let(id1,new TBool(), e.e1.accept(this), l2);
-        
-        return l1;
+        Exp f1 = e.e1.accept(this);
+        Exp f2 = e.e2.accept(this);
+        return new LE(f1, f2);
     }
 
     @Override

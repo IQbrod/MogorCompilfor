@@ -424,7 +424,7 @@ public class Main {
                         expression.accept(new PrintVisitor(null));
                         System.out.println();
                         
-                        System.out.println("AST:");
+                        System.out.println("ASML:");
                         main.accept(new ASMLPrintVisitor());
                         System.out.println();
                         
