@@ -165,7 +165,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Afunmain e) {
-        System.out.println(".text\n.global_start\n\n_start:");
+        System.out.println(".text\n.global _start\n\n_start:");
         e.e.accept(this);
     }
 
