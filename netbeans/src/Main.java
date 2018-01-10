@@ -421,9 +421,13 @@ public class Main {
                     
                     if (outputFile.equals("")) { // User n'a pas utilisé -o
                         System.out.println("AST:");
-                        expression.accept(new PrintVisitor());
+                        expression.accept(new PrintVisitor(null));
                         System.out.println();
-
+                        
+                        System.out.println("AST:");
+                        main.accept(new ASMLPrintVisitor());
+                        System.out.println();
+                        
                         System.out.println("ARM: ");
                         main.accept(new ARMConverterVisitor());
                         System.out.println();
