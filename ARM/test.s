@@ -9,10 +9,10 @@ STR R4, [FP, #4]
 SUB R5, R5, R5
 ADD R5, R5, #42
 STR R5, [FP, #8]
-LDR R6, [FP, #8]
-LDR R7, [FP, #4]
+LDR R6, [FP, #4]
+LDR R7, [FP, #8]
 CMP R6, R7
-BLE true0
+BEQ true0
 SUB R8, R8, R8
 ADD R8, R8, #0
 STR R8, [FP, #12]
