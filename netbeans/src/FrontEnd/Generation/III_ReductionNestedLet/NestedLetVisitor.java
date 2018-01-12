@@ -40,8 +40,7 @@ public class NestedLetVisitor implements ObjVisitor<Exp> {
     @Override
     public Exp visit(Not e) {
         Exp f = e.e.accept(this);
-        Not n = new Not(f);
-        return f;
+        return new Not(f);
     }
 
     @Override

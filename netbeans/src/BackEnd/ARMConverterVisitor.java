@@ -33,7 +33,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
     }
     
     private void pullVar(String v) {
-        System.out.print("LD R"+(regCt+4)+", "+ v +"\n");
+        System.out.print("LDR R"+(regCt+4)+", "+ v +"\n");
         regCt = (regCt+1)%9;
     }
     
@@ -49,7 +49,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
     
     private void store(String v) {
         int r = (regCt-1)%9+4;
-        System.out.print("ST R"+ r + ", " + v + "\n");
+        System.out.print("STR R"+ r + ", " + v + "\n");
     }
     
     @Override
@@ -147,7 +147,18 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Aeq e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.pullVar(tab.get(e.e1.id));
+        if(e.e2 instanceof Aint) {
+            this.pullImm("#"+((Aint)e.e2).i);
+        } else if (e.e2 instanceof Aident) {
+            this.pullVar(tab.get(((Aident)e.e2).id));
+        }
+        
+        int r1 = (regCt-2)%9+4;
+        int r2 = (regCt-1)%9+4;
+        
+        System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
+        System.out.print("BEQ ");
     }
 
     @Override
@@ -162,17 +173,39 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Age e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.pullVar(tab.get(e.e1.id));
+        if(e.e2 instanceof Aint) {
+            this.pullImm("#"+((Aint)e.e2).i);
+        } else if (e.e2 instanceof Aident) {
+            this.pullVar(tab.get(((Aident)e.e2).id));
+        }
+        
+        int r1 = (regCt-2)%9+4;
+        int r2 = (regCt-1)%9+4;
+        
+        System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
+        System.out.print("BGE ");
     }
 
     @Override
     public void visit(Ale e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.pullVar(tab.get(e.e1.id));
+        if(e.e2 instanceof Aint) {
+            this.pullImm("#"+((Aint)e.e2).i);
+        } else if (e.e2 instanceof Aident) {
+            this.pullVar(tab.get(((Aident)e.e2).id));
+        }
+        
+        int r1 = (regCt-2)%9+4;
+        int r2 = (regCt-1)%9+4;
+        
+        System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
+        System.out.print("BLE ");
     }
 
     @Override
     public void visit(Anot e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        e.e.accept(this);
     }
 
     @Override
@@ -205,8 +238,9 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Afunmain e) {
-        System.out.println(".text\n.global _start\n\n_start:");
+        System.out.println(".text\n.global _start\n\n_start:\nMOV FP, SP");
         e.e.accept(this);
+        System.out.print("NOP");
     }
 
     @Override
@@ -231,7 +265,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
     public void visit(Alet e) {
         this.curName = e.e1.id;
         /* ATTENTION => Ne gère pas pour l'instant la limite de registre d'ARM */
-        tab.put(curName,"[FP-"+offCt+"]");
+        tab.put(curName,"[FP, #"+offCt+"]");
         offCt += 4;
         e.e2.accept(this);
         e.e3.accept(this);
