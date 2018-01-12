@@ -2,7 +2,7 @@ package Parser;
 
 public class Id {
     String id;
-    Id(String id) {
+    public Id(String id) {
         this.id = id;
     }
     @Override

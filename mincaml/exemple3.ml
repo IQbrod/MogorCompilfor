@@ -1,4 +1,2 @@
-let x = 1 in
-let x = 2 in
-let y = x in
-print_int(y)
+let rec f x = x + y in
+print_int((f 1) 2)

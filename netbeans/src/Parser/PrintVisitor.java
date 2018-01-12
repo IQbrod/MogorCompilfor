@@ -152,7 +152,11 @@ public class PrintVisitor implements Visitor {
             printIndentation();
             newline = false;
         }
-        System.out.print(e.id);
+        if (ccv != null && ccv.functions.containsKey(e.id)) {
+            System.out.print("_" + e.id);
+        } else {
+            System.out.print(e.id);
+        }
     }
 
     // print sequence of identifiers 
@@ -210,7 +214,7 @@ public class PrintVisitor implements Visitor {
             indentation++;
             e.fd.e.accept(this);
             indentation = 0;
-            newline=true;
+            newline = true;
             e.e.accept(this);
         } else {
             if (newline) {
@@ -237,7 +241,7 @@ public class PrintVisitor implements Visitor {
                 newline = true;
                 e.e.accept(this);
                 System.out.println();
-            }    
+            }
         }
     }
 
@@ -247,18 +251,10 @@ public class PrintVisitor implements Visitor {
             newline = false;
             printIndentation();
         }
-        if (ccv != null) {
-            System.out.print("apply_direct(_");
-            e.e.accept(this);
-            System.out.print(",(");
-            printInfix2(e.es, ",");
-            System.out.print("))");
-        } else {
-            e.e.accept(this);
-            System.out.print("(");
-            printInfix2(e.es, " ");
-            System.out.print(")");
-        }
+        e.e.accept(this);
+        System.out.print("(");
+        printInfix2(e.es, ",");
+        System.out.print(")");
     }
 
     public void visit(Tuple e) {
