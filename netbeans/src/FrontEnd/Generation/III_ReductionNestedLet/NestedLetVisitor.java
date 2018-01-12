@@ -147,6 +147,7 @@ public class NestedLetVisitor implements ObjVisitor<Exp> {
 
     @Override
     public Exp visit(App e) {
+        System.out.println(e.e.toString());
         Exp f = e.e.accept(this);
         List<Exp> le = new ArrayList<>();
         for (Exp g : e.es) {
