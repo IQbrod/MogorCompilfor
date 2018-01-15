@@ -14,44 +14,45 @@ import java.util.HashMap;
  * @author sazeratj
  */
 public class ARMConverterVisitor implements ASMLVisitor {
+
     private String[] regs; //Registers from 4 to 12
     private int regCt; // Last Free register
     private int ifCt;
-    
-    private HashMap<String,String> tab; // Map varname => [FP-offset] ou #i
+
+    private HashMap<String, String> tab; // Map varname => [FP-offset] ou #i
     private int offCt; // Offset Counter
     private String curName; // Name of the current Let
-    
+
     public ARMConverterVisitor() {
-        this.tab = new HashMap<String,String>();
-        
+        this.tab = new HashMap<String, String>();
+
         this.ifCt = 0;
-        
+
         this.regs = new String[9];
         this.regCt = 0;
         this.offCt = 4;
     }
-    
+
     private void pullVar(String v) {
-        System.out.print("LDR R"+(regCt+4)+", "+ v +"\n");
-        regCt = (regCt+1)%9;
+        System.out.print("LDR R" + (regCt + 4) + ", " + v + "\n");
+        regCt = (regCt + 1) % 9;
     }
-    
+
     private void pullImm(String v) {
-        pushregister("R"+(regCt+4),v);
-        regCt = (regCt+1)%9;
+        pushregister("R" + (regCt + 4), v);
+        regCt = (regCt + 1) % 9;
     }
-    
+
     private void pushregister(String r, String v) {
         System.out.print("SUB " + r + ", " + r + ", " + r + "\n");
         System.out.print("ADD " + r + ", " + r + ", " + v + "\n");
     }
-    
+
     private void store(String v) {
-        int r = (regCt-1)%9+4;
-        System.out.print("STR R"+ r + ", " + v + "\n");
+        int r = (regCt - 1) % 9 + 4;
+        System.out.print("STR R" + r + ", " + v + "\n");
     }
-    
+
     @Override
     public void visit(Anop e) {
         System.out.println("NOP");
@@ -59,7 +60,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Aint e) {
-        this.pullImm("#"+e.i);
+        this.pullImm("#" + e.i);
         store(tab.get(curName));
     }
 
@@ -82,18 +83,18 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Aadd e) {
         this.pullVar(tab.get(e.e1.id));
-        if(e.e2 instanceof Aint) {
-            this.pullImm("#"+((Aint)e.e2).i);
+        if (e.e2 instanceof Aint) {
+            this.pullImm("#" + ((Aint) e.e2).i);
         } else if (e.e2 instanceof Aident) {
-            this.pullVar(tab.get(((Aident)e.e2).id));
+            this.pullVar(tab.get(((Aident) e.e2).id));
         }
-        
-        int r1 = (regCt-2)%9+4;
-        int r2 = (regCt-1)%9+4;
-        
-        System.out.print("ADD R"+(regCt+4)+", R"+r1+", R"+r2+"\n");
-        regCt = (regCt+1)%9;
-        
+
+        int r1 = (regCt - 2) % 9 + 4;
+        int r2 = (regCt - 1) % 9 + 4;
+
+        System.out.print("ADD R" + (regCt + 4) + ", R" + r1 + ", R" + r2 + "\n");
+        regCt = (regCt + 1) % 9;
+
         store(tab.get(curName));
     }
 
@@ -105,18 +106,18 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Asub e) {
         this.pullVar(tab.get(e.e1.id));
-        if(e.e2 instanceof Aint) {
-            this.pullImm("#"+((Aint)e.e2).i);
+        if (e.e2 instanceof Aint) {
+            this.pullImm("#" + ((Aint) e.e2).i);
         } else if (e.e2 instanceof Aident) {
-            this.pullVar(tab.get(((Aident)e.e2).id));
+            this.pullVar(tab.get(((Aident) e.e2).id));
         }
-        
-        int r1 = (regCt-2)%9+4;
-        int r2 = (regCt-1)%9+4;
-        
-        System.out.print("SUB R"+(regCt+4)+", R"+r1+", R"+r2+"\n");
-        regCt = (regCt+1)%9;
-        
+
+        int r1 = (regCt - 2) % 9 + 4;
+        int r2 = (regCt - 1) % 9 + 4;
+
+        System.out.print("SUB R" + (regCt + 4) + ", R" + r1 + ", R" + r2 + "\n");
+        regCt = (regCt + 1) % 9;
+
         store(tab.get(curName));
     }
 
@@ -148,15 +149,15 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Aeq e) {
         this.pullVar(tab.get(e.e1.id));
-        if(e.e2 instanceof Aint) {
-            this.pullImm("#"+((Aint)e.e2).i);
+        if (e.e2 instanceof Aint) {
+            this.pullImm("#" + ((Aint) e.e2).i);
         } else if (e.e2 instanceof Aident) {
-            this.pullVar(tab.get(((Aident)e.e2).id));
+            this.pullVar(tab.get(((Aident) e.e2).id));
         }
-        
-        int r1 = (regCt-2)%9+4;
-        int r2 = (regCt-1)%9+4;
-        
+
+        int r1 = (regCt - 2) % 9 + 4;
+        int r2 = (regCt - 1) % 9 + 4;
+
         System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
         System.out.print("BEQ ");
     }
@@ -174,15 +175,15 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Age e) {
         this.pullVar(tab.get(e.e1.id));
-        if(e.e2 instanceof Aint) {
-            this.pullImm("#"+((Aint)e.e2).i);
+        if (e.e2 instanceof Aint) {
+            this.pullImm("#" + ((Aint) e.e2).i);
         } else if (e.e2 instanceof Aident) {
-            this.pullVar(tab.get(((Aident)e.e2).id));
+            this.pullVar(tab.get(((Aident) e.e2).id));
         }
-        
-        int r1 = (regCt-2)%9+4;
-        int r2 = (regCt-1)%9+4;
-        
+
+        int r1 = (regCt - 2) % 9 + 4;
+        int r2 = (regCt - 1) % 9 + 4;
+
         System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
         System.out.print("BGE ");
     }
@@ -190,15 +191,15 @@ public class ARMConverterVisitor implements ASMLVisitor {
     @Override
     public void visit(Ale e) {
         this.pullVar(tab.get(e.e1.id));
-        if(e.e2 instanceof Aint) {
-            this.pullImm("#"+((Aint)e.e2).i);
+        if (e.e2 instanceof Aint) {
+            this.pullImm("#" + ((Aint) e.e2).i);
         } else if (e.e2 instanceof Aident) {
-            this.pullVar(tab.get(((Aident)e.e2).id));
+            this.pullVar(tab.get(((Aident) e.e2).id));
         }
-        
-        int r1 = (regCt-2)%9+4;
-        int r2 = (regCt-1)%9+4;
-        
+
+        int r1 = (regCt - 2) % 9 + 4;
+        int r2 = (regCt - 1) % 9 + 4;
+
         System.out.print("CMP R" + r1 + ", R" + r2 + "\n");
         System.out.print("BLE ");
     }
@@ -213,7 +214,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
         int i = 0;
         for (Aident a : e.args) {
             pullVar(tab.get(a.id));
-            pushregister("R"+i,"R"+((regCt-1)%9+4));
+            pushregister("R" + i, "R" + ((regCt - 1) % 9 + 4));
             i++;
         }
         System.out.print("bl ");
@@ -252,10 +253,19 @@ public class ARMConverterVisitor implements ASMLVisitor {
     public void visit(Aif e) {
         e.b.accept(this);
         System.out.print("true" + this.ifCt + "\n");
-        e.e2.accept(this);
-        System.out.print("b done" + this.ifCt + "\n");
-        System.out.print("true" + this.ifCt + ": ");
-        e.e1.accept(this);
+
+        if (e.b instanceof Anot) {
+            e.e1.accept(this);
+            System.out.print("b done" + this.ifCt + "\n");
+            System.out.print("true" + this.ifCt + ": ");
+            e.e2.accept(this);
+        } else {
+            e.e2.accept(this);
+            System.out.print("b done" + this.ifCt + "\n");
+            System.out.print("true" + this.ifCt + ": ");
+            e.e1.accept(this);
+        }
+
         System.out.print("\n");
         System.out.print("done" + this.ifCt + ": ");
         this.ifCt++;
@@ -265,7 +275,7 @@ public class ARMConverterVisitor implements ASMLVisitor {
     public void visit(Alet e) {
         this.curName = e.e1.id;
         /* ATTENTION => Ne gère pas pour l'instant la limite de registre d'ARM */
-        tab.put(curName,"[FP, #"+offCt+"]");
+        tab.put(curName, "[FP, #" + offCt + "]");
         offCt += 4;
         e.e2.accept(this);
         e.e3.accept(this);
@@ -280,5 +290,5 @@ public class ARMConverterVisitor implements ASMLVisitor {
     public void visit(Anew e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
