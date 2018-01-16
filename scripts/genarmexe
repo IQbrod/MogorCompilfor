@@ -1,0 +1,6 @@
+#!/bin/sh
+
+nom=$(echo $1 | cut -f 1 -d '.')
+/opt/gnu/arm/bin/arm-eabi-as -o $nom.o $1 ARM/libmincaml.S
+/opt/gnu/arm/bin/arm-eabi-ld -o $nom $nom.o
+rm $nom.o
