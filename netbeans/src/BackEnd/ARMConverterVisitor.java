@@ -77,7 +77,11 @@ public class ARMConverterVisitor implements ASMLVisitor {
 
     @Override
     public void visit(Alabel e) {
-        System.out.print(e.id);
+        if (e.id.charAt(0) == '_') {
+            System.out.print(e.id.substring(1));
+        } else {
+            System.out.print(e.id);
+        }
     }
 
     @Override
