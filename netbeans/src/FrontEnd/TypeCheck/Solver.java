@@ -58,9 +58,9 @@ public class Solver {
     
     public void solve() {
         if (this.resolution(this.arr).isEmpty()) {
-            System.out.println("\033[32mProgramme bien typé\033[0m");
+            exit(0);
         } else {
-            System.out.println("\033[31mProgramme mal typé\033[0m"); 
+            exit(1);
         }
     }
     
