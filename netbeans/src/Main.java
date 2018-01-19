@@ -256,6 +256,9 @@ public class Main {
                     Environnement predef = new Environnement();
                     ArrayList<Equation> eqArray = new ArrayList();
                     expression.accept(new TypeCheckVisitor(), predef, new TUnit(), eqArray);
+                    for (int i = 0; i < eqArray.size(); i++) {
+                        System.out.println(eqArray.get(i).toString());
+                    }
                     Solver s = new Solver(eqArray);
                     s.solve();
                 }  catch (Exception e) {
