@@ -214,6 +214,8 @@ public class ClosureConversionVisitor implements ClosureVisitor {
         if (e.fd.e instanceof LetRec) {
             lastF = e;
             f = new LetRec(fd, e.fd.e.accept(this));
+        } else if (lastF == null) {
+            f = new LetRec(fd, e.e.accept(this));
         } else {
             f = new LetRec(fd, lastF.e.accept(this));
         }
