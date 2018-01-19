@@ -253,6 +253,7 @@ public class Main {
                     Parser p = new Parser(new Lexer(new FileReader(fileName)));
                     Exp expression = (Exp) p.parse().value;
                     assert (expression != null);
+                    expression.accept(new PrintVisitor(null));
                     Environnement predef = new Environnement();
                     ArrayList<Equation> eqArray = new ArrayList();
                     expression.accept(new TypeCheckVisitor(), predef, new TUnit(), eqArray);
